@@ -6037,35 +6037,397 @@ sizeof
 //	return 0;
 //}
 //冒泡再认识 关键字qsort
-int bubble_sort(int arr[], int sz)
-{
-	int j = 0;
-	//一趟冒泡排序
-	for (j = 0; j < sz - 1; j++)
-	{
-		int flag = 0;
-		for (int i = 0; i < sz - 1 - j; i++)
-		{
-			if (arr[i] > arr[i + 1])
-			{
-				int t = arr[i];
-				arr[i] = arr[i + 1];
-				arr[i + 1] = t;
-				flag++;
-			}
-		}
-		if (flag == 0)
-			break;
-	}
-}
+//int bubble_sort(int arr[], int sz)
+//{
+//	int j = 0;
+//	//一趟冒泡排序
+//	for (j = 0; j < sz - 1; j++)
+//	{
+//		int flag = 1;
+//		for (int i = 0; i < sz - 1 - j; i++)
+//		{
+//			if (arr[i] > arr[i + 1])
+//			{
+//				int t = arr[i];
+//				arr[i] = arr[i + 1];
+//				arr[i + 1] = t;
+//				flag = 0;
+//			}
+//		}
+//		if (flag == 1)
+//			break;
+//	}
+//}
+//qsort库函数 使用快速排序的思想实现的一个排序函数
+//void qsort(
+//	void* base,//你要排序的数据的起始位置
+//	size_t num,//待排序的数据元素的个数
+//	size_t width,//待排序的数据元素的大小(单位是字节)
+//	int(__cdecl* compare)(const void* elem1, const void* elem2) //函数指针-比较函数
+//);
+//__cdecl 函数调用约定
+//int cmp_int(const void* e1, const void* e2)
+//{
+//	//e1 < e2 返回 <0
+//	//e1 = e2 返回  0
+//	//e1 > e2 返回 >0
+//	//if (*(int*)e1 > *(int*)e2)//所以这里强制类型转化为整形指针
+//	//{
+//	//	return 1;
+//	//}
+//	//else if (*(int*)e1 = *(int*)e2)//too
+//	//{
+//	//	return 0;
+//	//}
+//	//else
+//	//{
+//	//	return -1;
+//	//}
+//	//上面的写法过于啰嗦 下面写法简洁一点
+//	return (*(int*)e1 - *(int*)e2);
+//}
+//int main()
+//{
+//	int arr[] = { 6,7,8,9,99,4,3,2,1,0 };
+//	//把数组排成升序
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	//bubble_sort(arr, sz);
+//	qsort(arr, sz, sizeof(arr[0]), cmp_int);//回调函数实现qsort qsort默认排升序
+//	for (int i = 0; i < sz; i++)
+//		printf("%d ", arr[i]);
+//	return 0;
+//}
+//void*是啥 
+//int main()
+//{
+//	int a = 10;
+//	char* pa = &a;//int *
+//	void* pv = &a;//void* 是无具体类型的指针,可以接受任意类型的地址
+//	//void*是无具体类型的指针,所以不能解引用,也不能+-指针
+//	return 0;
+//}
+//qsort和bubble_sort的进阶NB牛逼法 建议多加复习
+//里面的char* 函数指针与回调函数需要好好理解
+//struct Stu
+//{
+//	char name[20];
+//	int age;
+//};
+//int cmp_int(const void* e1, const void* e2)
+//{
+//	return (*(int*)e1 - *(int*)e2);//--> 把 e1 转成 int* 类型，再解引用，得到第一个整数
+//	//< 0：表示 e1 < e2，排序时 e1 会排在 e2 前面 ✅
+//	//== 0：e1 和 e2 相等，顺序无所谓
+//	//> 0：e1 > e2，e1 会排在 e2 后面 ✅
+//}
+//int cmp_Stu_by_age(const void* e1, const void* e2)
+//{
+//	//return strcmp(((struct Stu*)e1)->age, ((struct Stu*)e2)->age);
+//	return ((struct Stu*)e1)->age-((struct Stu*)e2)->age;
+//}
+//int cmp_Stu_by_name(const void* e1, const void* e2)
+//{
+//	//strcmp的返回值恰好是  --->  0 >0 <0 这三种
+//	//strcmp的大小比较逻辑是
+//	//abc                      --> 大
+//	//abbjhdjhjfoisjfoiejf     --> 小
+//	//按26位字母顺序来 称之为:字典序升序排序
+//	return strcmp(((struct Stu*)e1)->name, ((struct Stu*)e2)->name);
+//}
+//void swap(char* buf1, char* buf2, int width)
+//{
+//	for (int i = 0; i < width; i++)
+//	{
+//		char tmp = *buf1;
+//		*buf1 = *buf2;
+//		*buf2 = tmp;
+//		buf1++;
+//		buf2++;
+//	}
+//}
+//void bubble_sort(void* base, int sz, int width, int(*cmp)(const void* e1, const void* e2))
+//{
+//	int j = 0;
+//	//一趟冒泡排序
+//	for (j = 0; j < sz - 1; j++)
+//	{
+//		int flag = 1;
+//		for (int i = 0; i < sz - 1 - j; i++)
+//		{
+//			if (cmp((char*)base + i * width, (char*)base + (i + 1) * width) > 0)
+//			{
+//				swap((char*)base + i * width, (char*)base + (i + 1) * width, width);
+//				flag = 0;
+//			}
+//		}
+//		if (flag == 1)
+//			break;
+//	}
+//}
+//void test1()
+//{
+//	int arr[] = { 6,7,8,9,99,4,3,2,1,0 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	qsort(arr, sz, sizeof(arr[0]), cmp_int);
+//	//bubble_sort(arr, sz, sizeof(arr[0]), cmp_int);
+//	for (int i = 0; i < sz; i++)
+//		printf("%d ", arr[i]);
+//	//return 0;
+//}
+//void test2()
+//{
+//	//使用qsort来排序结构数据
+//	struct Stu s[] = { {"zhangsan",15} ,{"lisi",30}, {"wangwu",25} };
+//	int sz = sizeof(s) / sizeof(s[0]);
+//	qsort(s, sz, sizeof(s[0]), cmp_Stu_by_name);
+//	printf("\n【test2】排序后的结构体数组（按 name）:\n");
+//	for (int i = 0; i < sz; i++)
+//	{
+//		printf("Name: %+10s, Age: %d\n", s[i].name, s[i].age);
+//	}
+//}
+//void test3()
+//{
+//	int arr[] = { 6,7,8,9,99,4,3,2,1,0 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	bubble_sort(arr, sz, sizeof(arr[0]), cmp_int);
+//	for (int i = 0; i < sz; i++)
+//		printf("%d ", arr[i]);
+//	//return 0;
+//}
+//void test4()
+//{
+//	struct Stu s[] = { {"zhangsan",15} ,{"lisi",30}, {"wangwu",25} };
+//	int sz = sizeof(s) / sizeof(s[0]);
+//	bubble_sort(s, sz, sizeof(s[0]), cmp_Stu_by_age);
+//	printf("\n【test2】排序后的结构体数组（按 age）:\n");
+//	for (int i = 0; i < sz; i++)
+//	{
+//		printf("Name: %-10s, Age: %d\n", s[i].name, s[i].age);
+//	}
+//}
+//int main()
+//{
+//	test1();
+//	test2();
+//	test3();
+//	test4();
+//	return 0;
+//}
+//										指针	笔试题详解
+//要去画图 要去画图 要去画图
+//int main()
+//{
+//	int a[] = { 1,2,3,4 };
+//	//x86是4 x64是8
+//	printf("%d \n", sizeof(a));//16
+//	printf("%d\n", sizeof(a + 0));//4        
+//	//上面的a表示首元素的地址 a+0还是首元素的地址 所以是4
+//	//a   <==> &a[0]
+//	//a+0 <==> &a[0]+0
+//	printf("%d\n", sizeof(*a));//4        
+//	//*a中的a就是首元素的地址,*a就是对首元素地址的解引用,找到的就是首元素       
+//	printf("%d\n", sizeof(a + 1));//4     
+//	//a+1是第二个元素的地址 与上面同理   
+//	printf("%d\n", sizeof(a[1]));//4      
+//	printf("%d\n", sizeof(&a));//4  
+//	//&a取出的数组的地址,数组的地址,也就是个地址
+//	printf("%d\n", sizeof(*&a));//16         
+//	//这里的a是整个数组 
+//	//&a ----> int(*)[4]
+//	//是数组指针 解引用时访问整个数组
+//	//指针类型决定解引用时访问的字节数
+//	printf("%d\n", sizeof(&a + 1));//4       
+//	//&a+1取出整个数组的地址+1就是直接跳过了整个数组指向数组的最后面
+//	//&a--> int(*)[4]
+//	//&a+1 是从数组a的地址向后跳过了一个(4个整形元素)的数组的大小
+//	printf("%d\n", sizeof(&a[0]));//4       
+//	printf("%d\n", sizeof(&a[0] + 1));//4 
+//	//第二个元素的地址
+//	return 0;
+//}
+//与上面的对照参考一下
+//int main()
+//{
+//	char arr[] = { 'a','b','c','d','e','f' };
+//	//字符串才加\0
+//	printf("%d\n", sizeof(arr));//6
+//	printf("%d\n", sizeof(arr + 0));//4
+//	//32位系统中指针大小固定为4字节,64位系统会是 8 字节
+//	printf("%d\n", sizeof(*arr));//1
+//	printf("%d\n", sizeof(arr[1]));//1
+//	printf("%d\n", sizeof(&arr));//4
+//	printf("%d\n", sizeof(&arr + 1));//4
+//	printf("%d\n", sizeof(&arr[0] + 1));//4
+//	printf("%d\n", sizeof(arr[0]+1));//4
+//	//会发生整型提升 整形的话就是4个字节
+//}
+//int main()
+//{
+//	char arr[] = { 'a','b','c','d','e','f' };  // 无 '\0'，不是标准C字符串
+//	//strlen是求字符串长度的
+//	printf("%d\n", strlen(arr));//随机值 >=6
+//	printf("%d\n", strlen(arr + 0));//随机值 >=6
+//	//printf("%d\n", strlen(*arr));//strlen('a') --> strlen(97)   野指针
+//	//printf("%d\n", strlen(arr[1]));//strlen(98)                 野指针
+//	printf("%d\n", strlen(&arr));//随机值
+//	printf("%d\n", strlen(&arr + 1));//随机值-6
+//	printf("%d\n", strlen(&arr[0] + 1));//随机值-1
+//	//printf("%d\n", strlen(arr[0] + 1));//err
+//	//
+//	return 0;
+//}
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	//[a b c d e f \0]
+//	printf("%d\n", sizeof(arr));//7
+//	printf("%d\n", sizeof(arr + 0));//4/8
+//	printf("%d\n", sizeof(*arr));//1
+//	printf("%d\n", sizeof(arr[1]));//1
+//	printf("%d\n", sizeof(&arr));//4/8
+//	printf("%d\n", sizeof(&arr + 1));//4/8
+//	printf("%d\n", sizeof(&arr[0] + 1));//4/8
+//
+//	printf("%d\n", strlen(arr));        // 6
+//	printf("%d\n", strlen(arr + 0));    // 6
+//	//printf("%d\n", strlen(*arr));       // 编译警告/运行崩溃（危险！）
+//	//printf("%d\n", strlen(arr[1]));     // 编译警告/运行崩溃（危险！）
+//	printf("%d\n", strlen(&arr));       // 6
+//	printf("%d\n", strlen(&arr + 1));   // 随机值（越界）
+//	printf("%d\n", strlen(&arr[0] + 1));// 5
+//
+//	printf("\n");
+//
+//	char* p = "abcdef";//       
+//	printf("%d\n", sizeof(p));//4
+//	printf("%d\n", sizeof(p + 1));//4
+//	printf("%d\n", sizeof(*p));//1 对char*类型解引用
+//	printf("%d\n", sizeof(p[0]));//1
+//	printf("%d\n", sizeof(&p));//4 二级指针
+//	printf("%d\n", sizeof(&p + 1));//4
+//	printf("%d\n", sizeof(&p[0] + 1));//4
+//
+//	printf("\n");
+//
+//	printf("%d\n", strlen(p));//6
+//	printf("%d\n", strlen(p + 1));//5
+//	//printf("%d\n", strlen(*p));//err     野指针
+//	//printf("%d\n", strlen(p[0]));//err   野指针
+//	printf("%d\n", strlen(&p));//随机值    二级指针
+//	printf("%d\n", strlen(&p + 1));//随机值
+//	printf("%d\n", strlen(&p[0] + 1));//5
+//	//p[0]：        等价于 *(p + 0)，即 p 指向的字符串首元素 'a'（因为 p 存的是 'a' 的地址）；
+//	//&p[0]：       取 'a' 的地址，本质和 p 完全等价（ & p[0] == p），类型是 char* ，指向 'a'；
+//	//& p[0] + 1：  字符指针加法，偏移量 = 1 字节（char 类型大小），
+//	//              所以指向 'a' 后面的第一个元素 'b'（地址 = 'a' 的地址 + 1）。
+//
+//	//二维数组
+//	int a[3][4] = { 10 };
+//	//口口口口
+//	//口口口口
+//	//口口口口
+//	printf("%d\n", sizeof(a));//48
+//	printf("%d\n", sizeof(a[0][0]));//4
+//	printf("%d\n", sizeof(a[0]));//16 a[0]表示第一个整个的这个一维数组
+//	printf("%d\n", sizeof(a[0] + 1));//4  &a[0][0]+1
+//	//这里的a是首元素的地址 表示第一行的一个元素的地址 a[0]+1就是第一行第二列的地址
+//	printf("%d\n", sizeof(*(a[0] + 1)));//4
+//	printf("%d\n", sizeof(a + 1));//4
+//	//a+1是第二行的地址
+//	printf("%d\n", sizeof(*(a + 1)));//16
+//	//*(a+1) --> a[1]
+//	printf("%d\n", sizeof(&a[0] + 1));//4
+//	printf("%d\n", sizeof(*(&a[0] + 1)));//16
+//	printf("%d\n", sizeof(*a));//16
+//	printf("%d\n", sizeof(a[3]));//16
+//
+//	return 0;
+//}
+//struct Test
+//{
+//	int num;
+//	char* pcname;
+//	short sDate;
+//	char cha[2];
+//	short sBa[4];
+//}*p = (struct Test*)0x100000;
+////已知上面这个是结构体大小是20个字节
+//int main()
+//{
+//	printf("%p\n", p + 0x1); //00100014
+//	//0x100000+20 -->0x100014
+//	printf("%p\n", (unsigned long)p + 0x1);//00100001
+//	//1,048,576+1 --> 1,048,577
+//	//0x100001
+//	printf("%p\n", (unsigned int*)p + 0x1);//00100004
+//	//0x100000+4 ---> 0x100004
+//	return 0;
+//}
+//int main()
+//{
+//	int a[4] = { 1,2,3,4 };
+//	int* ptr1 = (int*)(&a + 1);//00 00 00 04
+//	//VS是小端存储模式
+//	int* ptr2 = (int*)((int)a + 1);//02 00 00 00
+//	//00 00 00 01 --> 00 00 00 02
+//	//02 00 00 00
+//	printf("%x %x", ptr1[-1], *ptr2);//4     02 00 00 00
+//	return 0;
+//}
+//int main()
+//{
+//	int a[3][2] = { (0,1),(2,3),(4,5) };
+//	//数组内容是  因为是小括号不是大括号 是逗号表达式 一个小坑
+//	// 1 3 5
+//	// 0 0 0
+//	int* p;
+//	p = a[0];
+//	printf("%d", p[0]);//1
+//	return 0;
+//}
+//int main()
+//{
+//	//下面这题很难
+//	int a[5][5];
+//	int (*p)[4];
+//	p = a;
+//	//a --> int(*)[5]
+//	//p --> int(*)[4]
+//	printf("%p,%d\n", &p[4][2] - &a[4][2], &p[4][2] - &a[4][2]);
+//	//FFFFFFFC,-4
+//
+//	//这道简单一点
+//	int aa[2][5] = { 1,2,3,4,5,6,7,8,9,10 };
+//	// 1 2 3 4 5
+//	// 6 7 8 9 10
+//	int* ptr1 = (int*)(&aa + 1);//
+//	int* ptr2 = (int*)(*(aa + 1));//
+//	printf("%d,%d", *(ptr1 - 1), *(ptr2 - 1));//10 5
+//
+//	return 0;
+//}
+//int main()
+//{
+//	char* a[] = { "work","at","alibaba" };//指针数组
+//	char** pa = a;//
+//	pa++;
+//	printf("%s\n", *pa);//at
+//	return 0;
+//}
+//终极指针题 难度很大 
 int main()
 {
-	int arr[] = { 6,7,8,9,5,4,3,2,1,0 };
-	//把数组排成升序
-	int sz = sizeof(arr) / sizeof(arr[0]);
-	bubble_sort(arr, sz);
-	for (int i = 0; i < sz ; i++)
-		printf("%d ", arr[i]);
+	char* c[] = { "ENTER","NEW","POINT","FIRST" };//指针数组
+	char** cp[] = { c + 3,c + 2,c + 1,c };
+	char*** cpp = cp;
+
+	printf("%s\n", **++cpp);//POINT   这里++ --会改变了指针的位置
+	printf("%s\n", *-- * ++cpp + 3);//ER
+	printf("%s\n", *cpp[-2] + 3);//ST
+	//* *(cpp-2)+3
+	printf("%s\n", cpp[-1][-1] + 1);//
+	//*(*(cpp-1)-1)+1
 	return 0;
 }
 
