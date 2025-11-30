@@ -1,14 +1,15 @@
 ﻿#define  _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <math.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>  // 包含srand()和rand()函数
-#include <time.h> // 包含time()函数，用于获取系统时间
-#include <windows.h>//控制台
-#include <ctype.h>//islower isupper toupper tolower
-#include <assert.h>//assert
+//#include <assert.h>//assert
+//#include <ctype.h>//islower isupper toupper tolower
+//#include <math.h>
+//#include <stdbool.h>
+//#include <stdio.h>
+//#include <stdlib.h>  // 包含srand()和rand()函数
+//#include <string.h>
+//#include <time.h> // 包含time()函数，用于获取系统时间
+//#include <windows.h>//控制台
 //#include <algorithm>
+#include "Coding.h"
 
 //以下为两个数四则运算需要调用的函数
 //int Add(int x, int y)
@@ -6416,33 +6417,1429 @@ sizeof
 //	return 0;
 //}
 //终极指针题 难度很大 
+//int main()
+//{
+//	char* c[] = { "ENTER","NEW","POINT","FIRST" };//指针数组
+//	char** cp[] = { c + 3,c + 2,c + 1,c };
+//	char*** cpp = cp;
+//
+//	printf("%s\n", **++cpp);//POINT   这里++ --会改变了指针的位置
+//	printf("%s\n", *-- * ++cpp + 3);//ER
+//	printf("%s\n", *cpp[-2] + 3);//ST
+//	//* *(cpp-2)+3
+//	printf("%s\n", cpp[-1][-1] + 1);//EW
+//	//*(*(cpp-1)-1)+1
+//	return 0;
+//}
+//字符函数和字符串函数
+//求字符串长度
+//strlen
+//长度不受限的字符串函数
+//strcpy
+//strcat
+//strcmp
+//长度受限的字符串函数介绍
+//strncpy
+//strncat
+//strncmp
+//字符串查找
+//strstr
+//strtok
+//错误信息报告
+//strerror
+//字符操作
+//内存操作函数
+//memcpy
+//memmove
+//memset
+//memcmp
+//下面计数器方法实现my_strlen
+//还可以用指针-指针
+//
+//size_t my_strlen(const char* str)
+//{
+//	assert(str);//确保不是空指针
+//	size_t count = 0;
+//	while (*str != '\0')
+//	{
+//		count++;
+//		str++;
+//	}
+//	return count;
+//}
+//复习strlen
+//int main()
+//{
+//	
+//	//strlen 返回值是size_t 其实就是unsigned int
+//	char arr1[] = { "abcdef" };
+//	char arr2[] = { 'a','b','c' };
+//	int len1 = strlen(arr1);//6
+//	int len2 = strlen(arr2);//向后一直找到\0
+//	printf("%d\n%d\n", len1, len2);//6 >3的随机值
+//	if ((strlen("abc") - strlen("abcdef")) > 0)
+//	{
+//		//相减的-3被当无符号整形来理解 所以是大于
+//		printf(">\n");//✔
+//	}
+//	else
+//		printf("<\n");//×
+//	char arr[] = "abcdef";
+//	size_t n = my_strlen(arr);
+//	printf("%u\n", n);
+//	return 0;
+//}
+//strcpy
+//int main()
+//{
+//	char name[20] = { 0 };
+//	strcpy(name,"zhangsan");
+//	//拷贝遇到\0就结束了
+//	//但是也会拷贝\0
+//	//目标空间必须足够大，以确保能放得下源字符串
+//	//目标空间必须可变
+//  //strcpy返回的是目标空间的起始地址
+//	printf("%s\n", name);
+//	return 0;
+//}
+//char* my_strcpy(char* arr2, const char* arr1)
+//{
+//	assert(arr1&&arr2);
+//	char* ret=arr1;
+//	while (*arr2++ = *arr1++)
+//	{
+//		;
+//	}
+//	//*arr2 = *arr1;//\0
+//	return ret;
+//}
+//int main()
+//{
+//	char arr1[] = "abcdef";
+//	char arr2[20] = { 0 };
+//	my_strcpy(arr2, arr1);
+//	printf("%s", arr2);
+//	return 0;
+//}
+//字符串追加strcat
+//char* my_strcat(char*arr1,const char* src)
+//{
+//	assert(arr1 && src);
+//	char* ret = arr1;
+//	//先找到目标空间的末尾
+//	while (*arr1 != '\0')
+//	{
+//		arr1++;
+//	}
+//	//while(*arr1++ = *src++)
+//	//	;
+//	//再拷贝过去
+//	while (*src != '\0')
+//	{
+//		*arr1 = *src;
+//		arr1++;
+//		src++;
+//	}
+//	return ret;
+//}
+//int main()
+//{
+//	char arr1[25] = "Hello ";
+//	strcat(arr1, "World!");
+//	printf("%s\n", arr1);
+//	my_strcat(arr1," XZ_yu");
+//	//需要注意的是 被追加的字符串要预留足够的空间
+//	//追加到\0时停止
+//	printf("%s\n", arr1);
+//	my_strcat(arr1, arr1);
+//	printf("%s\n", arr1);
+//	return 0;
+//}
+//strcmp
+//比较两个字符串
+//int strcmp( const char *string1, const char *string2 )
+//比较一下两个字符串是否相等
+//string1 < string2 返回<0的数字
+//string1 0 string2 返回 0
+//string1 > string2 返回>0的数字
+//my_strcmp版本一 法一
+//int my_strcmp(char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	while (*str1 == *str2)
+//	{
+//		if (*str1 == '\0')
+//			return 0;
+//		str1++;
+//		str2++;
+//	}
+//	if (*str1 > *str2)
+//		return 1;
+//	else
+//		return -1;
+//}
+//my_strcmp版本二 法二
+//int my_strcmp(char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	while (*str1 == *str2)
+//	{
+//		if (*str1 == '\0')
+//			return 0;
+//		str1++;
+//		str2++;
+//	}
+//	return (*str1 - *str2);
+//}
+//int main()
+//{
+//	char arr1[] = "zhangsan";
+//	char arr2[] = "zhangsanfeng";
+//	int ret1 = strcmp(arr1, arr2);
+//	if (ret1 == 0)
+//		printf("相等\n");
+//	else if (ret1 > 0)
+//		printf(">\n");
+//	else
+//		printf("<\n");//✔😊
+//
+//	char arr7[] = "zhangsan";
+//	char arr8[] = "zhangsanfeng";
+//	int ret4 = my_strcmp(arr7, arr8);
+//	if (ret4 == 0)
+//		printf("相等\n");
+//	else if (ret4 > 0)
+//		printf(">\n");
+//	else
+//		printf("<\n");//✔😊
+//
+//	char arr3[] = { "abd" };
+//	char arr4[] = { "b" };
+//	int ret2 = strcmp(arr3, arr4);
+//	if (ret2 == 0)
+//		printf("相等\n");
+//	else if (ret2 > 0)
+//		printf(">\n");
+//	else
+//		printf("<\n");//✔😊
+//
+//	char arr5[] = { "a" };
+//	char arr6[] = { "A" };
+//	int ret3 = strcmp(arr5, arr6);
+//	if (ret3 == 0)
+//		printf("相等\n");
+//	else if (ret3 > 0)
+//		printf(">\n");//✔😊
+//	else
+//		printf("<\n");
+//
+//	return 0;
+//}
+//长度受限的字符串函数介绍
+//strncpy
+//strncat
+//strncmp
+//int main()
+//{
+//	char arr1[20] = "abcdef";
+//	char arr2[] = "hello bit";
+//	//strcpy(arr1, arr2);
+//	strncpy(arr1, arr2, 5);
+//	//这里要保证arr2的字符数量大于5
+//	//比strcpy多了一个size_t num这个参数
+//	printf("%s\n", arr1);
+//	return 0;
+//}
+//strncat和strncmp也是同理
+//strstr函数
+//查找子串的一个函数
+//str1里面查找str2这个子串并返回子串所在字符所在的第一个地址
+//查找不到就返回空指针NULL 只要str2里面有一个字符和str1不一样就会返回NULL
+//char* my_strstr(char* str1, const char* str2)
+//{
+//	assert(str1 && str2);
+//	const char* s1 = str1;
+//	const char* s2 = str2;
+//	const char* p = str1;
+//	while (*p)
+//	{
+//		s1 = p;
+//		s2 = str2;
+//		while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2)
+//		{
+//			s1++;
+//			s2++;
+//		}
+//		if (*s2 == '\0')
+//			return (char*)p;
+//		p++;
+//	}
+//	return NULL;
+//}
+//void print(char* p)
+//{
+//	while (*p != '\0')
+//	{
+//		printf("%c", *p);
+//		p++;
+//	}
+//	printf("\n");
+//}
+//int main()
+//{
+//	char email[] = "zpw@bitejiuyeke.com";
+//	char substr1[] = ".com";
+//	char substr2[] = "@bitejiuyeke";
+//	char* p1 = my_strstr(email, substr1);
+//	char* p2 = strstr(email, substr2);
+//	if (p1 == NULL)
+//		printf("子串不存在\n");
+//	else
+//	{
+//		print(p1);
+//	}
+//	if (p2 == NULL)
+//		printf("子串不存在\n");
+//	else
+//	{
+//		print(p2);
+//	}
+//	return 0;
+//}
+//strtok
+//char *strtok( char *strToken, const char *strDelimit )
+//切割字符串
+//第一个参数是被分割的字符串 第二个参数是用作分隔符的字符集合
+//但是会把分隔符改成\0并返回子串的首字符地址
+//strtok函数找到str中的下一个标记并将其用\0结尾，返回一个指向这个标记的指针。
+//（注：strtok函数会改变被操作的字符串，所以在使用strtok函数切分的字符串一般都是临时拷贝的内容并且可修改。)
+//strtok函数的第一个参数不为NULL，函数将找到str中第一个标记，strtok函数将保存它在字符串
+//中的位置。
+//strtok函数的第一个参数为NULL，函数将在同一个字符串中被保存的位置开始，查找下一个标记。
+//如果字符串中不存在更多的标记，则返回NULL指针
+//int main()
+//{
+//	char email[] = "xingzi1019@qq.com.net";
+//	char cp[40] = { 0 };
+//	const char* sep1 = "@.";
+//	strcpy(cp, email);
+//
+//	/*char* ret1=strtok(cp, sep1);
+//	printf("%s\n", ret1);
+//	ret1 = strtok(NULL, sep1);
+//	printf("%s\n", ret1);
+//	ret1 = strtok(NULL, sep1);
+//	printf("%s\n", ret1);*/
+//	char* ret = NULL;
+//	for (ret = strtok(cp, sep1); ret != NULL; ret = strtok(NULL, sep1))
+//	{
+//		printf("%s\n", ret);
+//	}
+//
+//	return 0;
+//}
+//strerror
+//char* strerror( int errnum)
+//返回错误码所对应的错误消息
+//C语言的库函数,在执行失败的时候,都会设置错误码
+//int main()
+//{
+//	printf("%s\n", strerror(0));//No error
+//	printf("%s\n", strerror(1));//Operation not permitted
+//	printf("%s\n", strerror(2));//No such file or directory
+//	printf("%s\n", strerror(3));//No such process
+//	printf("%s\n", strerror(4));//Interrupted function call
+//	printf("%s\n\n", strerror(5));//Input/output error
+//
+//	//errno -C语言设置的一个全局的错误码存放的变量
+//	FILE* pf = fopen("C:\\Users\\ROGxingzi\\Desktop\\test.txt","r");//绝对路径
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	else
+//	{
+//		;
+//	}
+//	FILE* pf2 = fopen("test.txt", "r");//相对路径
+//	if (pf2 == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	else
+//	{
+//		;
+//	}
+//	return 0;
+//}
+//字符分类函数
+//iscontrl
+//isspace
+//isdigit
+//isxdigit
+//islower
+//isupper
+//isalpha
+//isalnum
+//ispunct
+//isgraph
+//字符转换
+//tolower
+//toupper
+//介绍memcpy 内存拷贝函数
+//void *memcpy(void *dest, const void *src, size_t n)
+//void* my_memcpy(void* dest, const void* src, size_t num)
+//{
+//	assert(dest && src);
+//	void* ret = dest;
+//	while (num--)
+//	{
+//		*(char*)dest = *(char*)src;
+//		dest = (char*)dest + 1;
+//		src = (char*)src + 1;
+//	}
+//	return ret;
+//}
+//int main()
+//{
+//	int src[] = { 1, 2, 3, 4, 5 };
+//	int dest[5];
+//	memcpy(dest, src, sizeof(src));
+//	for (int i = 0; i < 5; i++)
+//	{
+//		printf("%d ", dest[i]);
+//	}
+//
+//	printf("\n");
+//
+//	int src2[] = { 1, 2, 3, 4, 5 };
+//	int dest2[5];
+//	my_memcpy(dest2, src2, sizeof(src2));
+//	for (int i = 0; i < 5; i++)
+//	{
+//		printf("%d ", dest2[i]);
+//	}
+//	return 0;
+//}
+//VS对memcpy有升级处理
+//内存函数
+//int main()
+//{
+//	int arr1[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	int sz = sizeof(arr1) / sizeof(arr1[0]);
+//	int arr2[20] = { 0 };
+//	memcpy(arr2, arr1, sz * 4);
+//
+//	for (int i = 0; i < sz; i++)
+//	{
+//		printf("%d ", arr2[i]);
+//	}
+//	return 0;
+//}
+//使用memmove来实现重叠内存之间的数据拷贝
+//安全可靠：     memmove被专门设计用来处理源和目标内存块存在重叠的情况。
+//结果定义明确： 无论内存是否重叠，memmove都能保证复制的结果是正确的。它会采取必要的策略来避免覆盖还未被复制的数据。
+//void* my_memmove(void* dest, const void* src, size_t num)
+//{
+//	assert(dest && src);
+//	void* ret = dest;
+//	if (dest < src)
+//	{
+//		//从前往后拷贝和memcpy一样
+//		void* ret = dest;
+//		while (num--)
+//		{
+//			*(char*)dest = *(char*)src;
+//			dest = (char*)dest + 1;
+//			src = (char*)src + 1;
+//		}
+//	}
+//	else
+//	{
+//		//从后往前拷贝
+//		while (num--)
+//		{
+//			*((char*)dest + num) = *((char*)src + num);
+//			//鹏哥还是太牛逼了 很强的代码
+//		}
+//	}
+//	return ret;
+//}
+//void test1()
+//{
+//
+//}
+//void test2()
+//{
+//
+//}
+//void test3()
+//{
+//	int arr1[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	my_memmove(arr1 + 2, arr1, 20);
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", arr1[i]);
+//	}
+//}
+//int main()
+//{
+//	test2();
+//	test3();
+//	return 0;
+//}
+//memcmp
+//int memcmp(const void *ptr1, const void *ptr2, size_t n)
+//按字节比较：memcmp逐字节地比较两个内存块。
+//指定比较长度：它需要一个明确的参数 n来指定要比较多少个字节。
+//返回值含义：返回一个整数，表示比较结果：
+//返回值 < 0：在第一个不匹配的字节处，ptr1的字节小于 ptr2的字节。
+//返回值 == 0：两个内存块的前 n个字节完全相同。
+//返回值 > 0：在第一个不匹配的字节处，ptr1的字节大于 ptr2的字节。
+//不关心数据类型：它将内存视为纯粹的字节序列，不关心这些字节构成的是 int、float还是其他数据结构。
+//不停止于 \0：即使遇到字节 0（空字符），只要没比较完 n个字节，就会继续比较。
+//int main()
+//{
+//	int arr1[] = { 1,2,3,4,5 };
+//	//01 00 00 00 02 00 00 00 03 00 00 00 04 00 00 00 05 00 00 00
+//	int arr2[] = { 1,2,2 };
+//	//01 00 00 00 03 00 00 00 02 00 00 00
+//	int ret = memcmp(arr1, arr2, 12);
+//	printf("%d\n", ret);
+//	return 0;
+//}
+//memset
+//void *memset(void *ptr, int value, size_t n)
+//按字节设置：    memset以字节为单位进行操作。它将指针所指向的内存块的每一个字节都设置为给定的值 value。
+//设置整个区域：  它需要一个明确的参数 n来指定要设置的字节数。
+//返回值：       返回指向目标内存区域 ptr的指针
+//需要注意的是他是按字节来操作的
+// 用法一:初始化数组某些元素的初始值
+//int main()
+//{
+//	int arr1[] = { 1,2,3,4,5,6,7,8,9,10 };
+//	int sz = sizeof(arr1) / sizeof(arr1[0]);
+//	memset(arr1, 0, 16);
+//	for (int i = 0; i < sz; i++)
+//	{
+//		printf("%d ", arr1[i]);
+//	}
+//	return 0;
+//}
+//#define BUFFER_SIZE 16
+//int main()
+//{
+//	char buffer[BUFFER_SIZE];
+//	// 场景 1: 创建一个重复的字节模式 (例如，用于测试)
+//	memset(buffer, 'A', BUFFER_SIZE - 1); // 填充 'A'
+//	buffer[BUFFER_SIZE - 1] = '\0';       // 手动添加字符串结束符
+//	printf("Pattern buffer: %s\n", buffer); // 输出: AAAAAAAAAAAAAAA
+//	// 场景 2: 在已知大小的结构体中清零
+//	struct Point
+//	{
+//		int x, y;
+//		char label[10];
+//	}; 
+//	struct Point p1;
+//	memset(&p1, 0, sizeof(p1)); //将所有成员（包括可能的填充字节）清零
+//	printf("Point p1 after memset: x=%d, y=%d\n", p1.x, p1.y); // 输出: x=0, y=0
+//	// 场景 3: 重置动态分配的内存
+//	char* dynamic_buffer = malloc(BUFFER_SIZE);
+//	strcpy(dynamic_buffer, "Some data");
+//	printf("Before reset: %s\n", dynamic_buffer);
+//	memset(dynamic_buffer, 0, BUFFER_SIZE); // 安全地清空缓冲区
+//	printf("After reset: %s\n", dynamic_buffer); // 输出为空字符串
+//	free(dynamic_buffer);
+//	return 0;
+//}
+//int main()
+//{
+//	//char arr[] = "hello bit";
+//	//memset(arr + 6, 'x', 3);
+//	//printf("%s\n", arr);
+//	int arr[10] = { 0 };
+//	memset(arr, 1, 40);
+//	for (int i = 0; i < 10; i++)
+//	{
+//		printf("%d ", arr[i]);
+//	}
+//	return 0;
+//}
+//作业来喽
+//题目一
+//小乐乐喜欢数字，尤其喜欢0和1
+//他现在得到了一个数，想把每位的数变成0或1
+//如果某一位是奇数，就把它变成1，如果是偶数，那么就把它变成0。请你回答他最后得到的数是多少。
+//自己的法一:
+//void* transform(char* arr)
+//{
+//	while (*arr != '\0')
+//	{
+//		int num = *arr - '0';
+//		if (num % 2 == 0)
+//		{
+//			*arr = '0';
+//		}
+//		else
+//		{
+//			*arr = '1';
+//		}
+//		arr++;
+//	}
+//}
+//int main()
+//{
+//	char arr[1001] = "3333333333";
+//	scanf("%s", arr);
+//	transform(arr);
+//	printf("%s\n", arr);
+//	return 0;
+//}
+//AI优化的法二
+//void transform(char* arr)
+//{
+//	while (*arr != '\0')
+//	{
+//		int num = *arr - '0';
+//		*arr = (num % 2 == 0) ? '0' : '1';
+//		arr++;
+//	}
+//}
+//
+//int main()
+//{
+//	char arr[1001];
+//	scanf("%s", arr);
+//	transform(arr);
+//	printf("%s\n", arr);
+//	return 0;
+//}
+//鹏哥的法三
+//int main()
+//{
+//	int input = 0;
+//	int sum = 0;
+//	scanf("%d", &input);
+//	//12345
+//	int i = 0;
+//	while (input != 0)
+//	{
+//		int bit = input % 10;
+//		if (bit % 2 == 1)
+//		{
+//			sum = sum + 1 * pow(10, i);
+//			i++;
+//		}
+//		else
+//		{
+//			sum = sum + 0 * pow(10, i);
+//			i++;
+//		}
+//		input = input / 10;
+//	}
+//	printf("%d\n", sum);
+//	return 0;
+//}
+//法四
+//int main() 
+//{
+//	int input = 0;
+//	int sum = 0;
+//	int multiplier = 1;
+//	scanf("%d", &input);
+//	while (input != 0) 
+//	{
+//		// 使用位运算判断奇偶，效率最高
+//		if ((input % 10) & 1) 
+//		{
+//			sum += multiplier;
+//		}
+//		multiplier *= 10;
+//		input /= 10;
+//	}
+//	printf("%d\n", sum);
+//	return 0;
+//}
+//题目二
+//		   * 
+//		 * *
+//	   * * * 
+//	 * * * *
+// * * * * *
+//法一:自己的二维数组
+//int main()
+//{
+//	int n;
+//	scanf("%d", &n);
+//	char arr[20][40] = { 0 };
+//	// 遍历所有行和列，逐个赋值为空格
+//	for (int i = 0; i < 20; i++)
+//	{
+//		for (int j = 0; j < 40; j++)
+//		{
+//			arr[i][j] = '-';
+//		}
+//	}
+//	//		  * 
+//	//	    * *
+//	//	  * * * 
+//	//  * * * *
+//	//* * * * *
+//	//给二维数组染上*
+//	for (int i = 0; i < n; i++)
+//	{
+//		for (int j = 2 * n - 2; j >= n * 2 - 2 * i - 2; j -= 2)
+//		{
+//			arr[i][j] = '*';
+//		}
+//	}
+//	//打印
+//	for (int i = 0; i < n; i++)
+//	{
+//		for (int j = 0; j < n * 2; j++)
+//		{
+//			printf("%c", arr[i][j]);
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+//法二: 直接打印
+//注意是先*再空格
+//int main()
+//{
+//	int n = 0;
+//	while (scanf("%d", &n) == 1)
+//	{
+//		int i = 0;
+//		int j = 0;
+//		//	//		  * 
+//		//	//	    * *
+//		//	//	  * * * 
+//		//	//  * * * *
+//		//	//* * * * *
+//		//这个做法巧妙在把空格和星号空格当成整体进行输出
+//		for (i = 0; i < n; i++)
+//		{
+//			for (j = 0; j < n; j++)
+//			{
+//				if (i + j < n - 1)
+//				{
+//					printf("  ");
+//				}
+//				else
+//				{
+//					printf("* ");
+//				}
+//			}
+//			printf("\n");
+//		}
+//	}
+//	return 0;
+//}
+//KiK非常喜欢网购，在一家店铺他看中听一件衣服，他了解到，
+//如果今天是“双11"(11月11日)则这件衣服打7折，“双12”(12月12日)则这件衣服打8折，
+//如果有优惠券可以额外减50元（优惠券只能在双11或双12使用)，求KiKi最终所花的钱数。
+//数据范围：衣服价格满足15 <= val <= 100000
+//输入描述：
+//一行，四个数字，第一个数表示小明看中的衣服价格，第二和第三个整数分别表示当天的月份、当天的日期、第四个整数表示是否有优惠券
+//（有优惠券用1表示，无优惠券用0表示)。注：输入日期保证只有“双11”和“双12”。
+//输出描述：
+//一行，小明实际花的钱数 （保留两位小数）。（提示：不要指望商家倒找你钱）  太简单了这题
+//自己的法一
+//int main()
+//{
+//	float val;
+//	int mon, date, iscoupon;
+//	scanf("%f %d %d %d", &val, &mon, &date, &iscoupon);
+//	//判断是否有优惠券
+//	int count;
+//	if (iscoupon == 1)
+//		count = 50;
+//	else
+//		count = 0;
+//	//判断应该打几折
+//	if (mon == 11 && date == 11)
+//	{
+//		//7折
+//		if (val * 0.7 - count >= 0)
+//			printf("%.2f", val * 0.7 - count);
+//		else
+//			printf("0.00");
+//	}
+//	else if (mon == 12 && date == 12)
+//	{
+//		//8折
+//		if (val * 0.8 - count)
+//			printf("%.2f", val * 0.8 - count);
+//		else
+//			printf("0.00");
+//	}
+//	else
+//	{
+//		//没有优惠
+//		printf("%.2f", val);
+//	}
+//	return 0;
+//}
+//上面这个输出可以集中化处理更节省空间
+//整形提升与截断题
+//int main()
+//{
+//	//char -128~127
+//	//unsigned char 0~255
+//	unsigned char a = 200;
+//	//00000000 00000000 00000000 11001000 -->200
+//	//11001000							  --> a  截断
+//	unsigned char b = 100;
+//	//00000000 00000000 00000000 01100100 -->100
+//	//01100100							  --> b  截断
+//	unsigned char c = 0;
+//	c = a + b;//整形提升 高位补0
+//	//00000000 00000000 00000000 11001000
+//	//00000000 00000000 00000000 01100100
+//	//00000000 00000000 00000001 00101100 a + b
+//	//00101100  --> 这里又发生截断
+//	//转换成10进制就是44
+//	printf("%d %d", a + b, c);//300 44
+//	return 0;
+//}
+//题目
+//unsigned int a = 0x1234
+//unsigned char b =*(unsigned char *)&a
+//在32位大端模式处理器上变量b等于
+//复习一下大小端存储模式
+//内存：低地址-------------------------高地址
+//小端           34 12 00 00                低位数据放在低地址 高位数据放在高地址 
+//大端           00 00 12 34                高位数据放在低地址 低位数据放在高地址
+//题目名称：
+//猜名次
+//题目内容：
+//5位运动员参加了10米台跳水比赛，有人让他们预则比赛结果：
+//A选手说：B第二，我第三；
+//B选手说：我第二，E第四；
+//C选手说：我第一，D第二；
+//D选手说：C最后，我第三；
+//E选手说：我第四，A第一；
+//比赛结束后，每位选手都说对了一半，请编程确定比赛的名次。
+//int main()
+//{
+//	int a = 0, b = 0, c = 0, d = 0, e = 0;
+//	for (a = 1; a <= 5; a++)
+//	{
+//		for (b = 1; b <= 5; b++)
+//		{
+//			for (c = 1; c <= 5; c++)
+//			{
+//				for (d = 1; d <= 5; d++)
+//				{
+//					for (e = 1; e <= 5; e++)
+//					{
+//						//好好理解这个判断条件
+//						if ((b == 2) + (a == 3) == 1
+//							&& ((b == 2) + (e == 4) == 1)
+//							&& ((c == 1) + (d == 2) == 1)
+//							&& ((c == 5) + (d == 3) == 1)
+//							&& ((e == 4) + (a == 1) == 1))
+//						{
+//							if (a * b * c * d * e == 120 && a + b + c + d + e == 15)
+//								//过滤一下重复的 不理解的话可以把这个if删掉
+//								printf("a=%d b=%d c=%d d=%d e=%d", a, b, c, d, e);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//	return 0;
+//}
+//题目：猜凶手
+//描述：凶手是四个人中的一个
+//A：不是A
+//B：是C
+//C：是D
+//D：C在胡说
+//三个真话 一个假话
+//鹏哥的牛逼方法
+//int main()
+//{
+//	int killer = 0;
+//	for (killer = 'a'; killer <= 'd'; killer++)
+//	{
+//		//判断
+//		if ((killer != 'a') + (killer == 'c') + (killer == 'd') + (killer != 'd') == 3)
+//		{
+//			printf("%c\n", killer);
+//		}
+//	}
+//	return 0;
+//}
+//打印杨辉三角
+//    1
+//   1 1
+//  1 2 1
+// 1 3 3 1
+//1 4 6 4 1
+// 左对齐
+//1
+//1 1
+//1 2 1
+//1 3 3 1
+//1 4 6 4 1
+//int main()
+//{
+//	int arr[10][10] = { 0 };
+//	int i = 0, j = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		for (j = 0; j <= i; j++)
+//		{
+//			if (j == 0)
+//			{
+//				arr[i][j] = 1;
+//			}
+//			if (i == j)
+//			{
+//				arr[i][j] = 1;
+//			}
+//			if (i >= 2 && j >= 1)
+//			{
+//				arr[i][j] = arr[i - 1][j - 1] + arr[i - 1][j];
+//			}
+//		}
+//	}
+//	//打印
+//	for (i = 0; i < 10; i++)
+//	{
+//		for (j = 0; j <= i; j++)
+//		{
+//			printf("%3d ", arr[i][j]);
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+//把杨辉三角对齐需要打印空格挤过去 仿照之前的棱形
+//int main()
+//{
+//	int arr[10][10] = { 0 };
+//	int i = 0, j = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		for (j = 0; j <= i; j++)
+//		{
+//			if (j == 0)
+//				arr[i][j] = 1;
+//			if (i == j)
+//				arr[i][j] = 1;
+//			if (i >= 2 && j >= 1)
+//				arr[i][j] = arr[i - 1][j - 1] + arr[i - 1][j];
+//		}
+//	}
+//	//打印
+//	//    1
+//	//   1 1
+//	//  1 2 1
+//	// 1 3 3 1
+//	//1 4 6 4 1
+//	for (i = 0; i < 10; i++)
+//	{
+//		//空格
+//		for (j = 0; j < 10 - i; j++)
+//			printf("  ");//理解为什么是两个空格
+//		//数字
+//		for (j = 0; j <= i; j++)
+//			printf("%3d ", arr[i][j]);
+//		printf("\n");
+//	}
+//
+//	return 0;
+//}
+//左旋转字符串的k个字符
+//鹏哥版本的旋转字符
+//void left_rotate(char arr[], int k)
+//{
+//	int i = 0;
+//	int len = strlen(arr);
+//	//旋转k个字符
+//	for (i = 0; i < k; i++)
+//	{
+//		//旋转一个字符
+//		//1
+//		char tmp = arr[0];
+//		//2
+//		int j = 0;
+//		//挪动后面的使其往前
+//		for (j = 0; j < len - 1; j++)
+//		{
+//			arr[j] = arr[j + 1];
+//		}
+//		//3
+//		arr[len - 1] = tmp;
+//	}
+//}
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	int sz = strlen(arr);
+//	int k = 0;
+//	scanf("%d", &k);
+//	//朱子峰提出的if else优化
+//	//也可以在left_rotate里面补充 K = k % len
+//	//这样子可以省去if else 的判断
+//	if (k == sz)
+//	{
+//		;
+//	}
+//	else if (k > sz)
+//	{
+//		left_rotate(arr, k - sz);
+//	}
+//	else
+//		left_rotate(arr, k);
+//	printf("%s\n", arr);
+//	return 0;
+//}
+//开学那会ACM教练提到的转置方法 先把字符串分割成两部分 然后两个子串分别转置 最后两个子串合成一个子串后集体再转置
+//很巧妙的一个方法  过程如下
+//abcdef
+//ba fedc
+//cdefab
+//void reverse(char* left, char* right)
+//{
+//	//abcdef
+//	//abcde
+//	assert(left && right);
+//	while (left++ < right--)
+//	{
+//		char tmp = *left;
+//		*left = *right;
+//		*right = tmp;
+//	}
+//}
+//void left_rotate(char arr[], int k)
+//{
+//	int len = strlen(arr);
+//	k = k % len;//不加会越界访问
+//	//逆序左边
+//	reverse(arr, arr + k - 1);
+//	//逆序右边
+//	reverse(arr + k, arr + len - 1);
+//	//逆序全部
+//	reverse(arr, arr + len - 1);
+//}
+//int main()
+//{
+//	char arr[] = "abcdef";
+//	int sz = strlen(arr);
+//	int k = 0;
+//	scanf("%d", &k);
+//	printf("%s\n", arr);
+//	return 0;
+//}
+//杨氏矩阵
+//从左向右和从上往下都是递增的
+//查找某个元素是否存在 时间复杂度不大于o(N)
+//1 2 3
+//4 5 6
+//7 8 9
+//   找右上角元素来比较
+//自己乱七八糟随便写的
+//int main()
+//{
+//	int arr[3][3] = { 1,2,3,4,5,6,7,8,9 };
+//	int n;
+//	scanf("%d", &n);//n=5
+//	for (int i = 0; i < 3; i++)
+//	{
+//		if (arr[i][3]>=n)
+//		{
+//			for (int j=2;j>=0;j--)
+//			{
+//				if (arr[i][j] == n)
+//				{
+//					printf("在第%d行 第%d列\n", i + 1, j + 1);
+//					break;
+//				}
+//			}
+//		}
+//	}
+//
+//	return 0;
+//}
+//鹏哥的思路版本
+//返回两个东西可以靠结构体来实现 也可以通过传参传指针来进行修改
+//结构体版本
+//struct point
+//{
+//	int x;
+//	int y;
+//};
+//struct point Find_Num(int arr[3][3], int row, int col, int k)
+//{
+//	int x = 0, y = col - 1;
+//	struct point p = { -1, -1 };
+//	while (x <= row - 1 && y >= 0)
+//	{
+//		if (arr[x][y] > k)
+//			y--;
+//		else if (arr[x][y] < k)
+//			x++;
+//		else
+//		{
+//			p.x = x;
+//			p.y = y;
+//			//printf("第%d行 第%d列\n", x+1, y+1);
+//			//但是为了保证函数的单一性 不打印东西了 尝试使用结构体来返回两个值
+//			return p;
+//		}
+//	}
+//	return p;
+//}
+//int main()
+//{
+//	int arr[3][3] = { 1,2,3,4,5,6,7,8,9 };
+//	int k;
+//	scanf("%d", &k);//k=5
+//	struct point ret = Find_Num(arr, 3, 3, k);
+//	printf("第%d行 第%d列\n", ret.x+1, ret.y+1);
+//	return 0;
+//}
+//指针版本
+//void Find_Num(int arr[3][3], int* row, int* col, int k)
+//{
+//	assert(row && col);
+//	int x = 0, y = 2;  // y = col - 1 = 3 - 1 = 2
+//	*row = -1;
+//	*col = -1;
+//	while (x <= 2 && y >= 0)  // row-1=2, 所以x<=2
+//	{
+//		if (arr[x][y] > k)
+//			y--;
+//		else if (arr[x][y] < k)
+//			x++;
+//		else
+//		{
+//			*row = x;
+//			*col = y;
+//			return;
+//		}
+//	}
+//}
+//int main()
+//{
+//	int arr[3][3] = { {1,2,3}, {4,5,6}, {7,8,9} };
+//	int k;
+//	scanf("%d", &k); // k=5
+//	int row, col;  // 用来接收找到的行列下标
+//	Find_Num(arr, &row, &col, k);  // 传入地址
+//	//要再使用时记得对col和row进行重置
+//	if (row != -1 && col != -1) 
+//	{
+//		printf("第%d行 第%d列\n", row + 1, col + 1);
+//	}
+//	else 
+//	{
+//		printf("未找到元素 %d\n", k);
+//	}
+//	return 0;
+//}
+//判断一个字符串能否由另一个字符串左旋得到
+//使用库函数strstr
+//用于在一个字符串（主串）中查找另一个字符串（子串）的首次出现位置，返回指向该位置的指针；若未找到则返回 NULL。
+//char *strstr(const char *haystack, const char *needle)
+//int is_left_move(int arr1[],int arr2[])
+//{
+//	int len1 = strlen(arr1);
+//	int len2 = strlen(arr2);
+//	if (len1 != len2)
+//		return 0;
+//	strncat(arr1,arr1,len1);
+//	//abcdefabcdef 这样任何旋转之后的字符串的可能性都会在这个字符串里面
+//	//比较不容易想得到
+//	char* ret = strstr(arr1,arr1);
+//	if (ret == NULL)
+//		return 0;
+//	else
+//		return 1;
+//}
+//int main()
+//{
+//	char arr1[20] = "abcdef";
+//	char arr2[] = "cdefab";
+//	int ret = is_left_move(arr1,arr2);
+//	if (ret == 1)
+//		printf("Yes\n");
+//	else 
+//		printf("No\n");
+//	return 0;
+//}
+//void print(int arr[], int num)
+//{
+//	for (int i = 0; i < num; i++)
+//	{
+//		printf("%d ", arr[i]);
+//	}
+//}
+//int cmp_int_asc(const void* a, const void* b)
+//{
+//	int val1 = *(const int*)a;
+//	int val2 = *(const int*)b;
+//	return (val1 < val2) ? -1 : (val1 > val2) ? 1 : 0;//嵌套的三目操作符 实现了三种情况
+//}
+//int cmp_int_desc(const void* a, const void* b)
+//{
+//	int val1 = *(const int*)a;
+//	int val2 = *(const int*)b;
+//	return (val1 > val2) ? -1 : (val1 < val2) ? 1 : 0;
+//}
+//int main()
+//{
+//	int arr[100] = { 0 };
+//	int n;
+//	printf("请输入您要排序的整数数据个数\n");
+//	scanf("%d", &n);
+//	printf("请输入您要排序的数据\n");
+//	for (int i = 0; i < n; i++)
+//	{
+//		scanf("%d", &arr[i]);
+//	}
+//	int input = -1;
+//	printf("请输入您的选择1/2\n1为2升序\n2为降序\n");
+//	scanf("%d", &input);
+//	switch (input)
+//	{
+//	case 1:
+//		qsort(arr, n, sizeof(int), cmp_int_asc);
+//		print(arr, n);
+//		break;
+//	case 2:
+//		qsort(arr, n, sizeof(int), cmp_int_desc);
+//		print(arr, n);
+//		break;
+//	case 0:
+//		printf("退出\n");
+//		exit(0);
+//		break;
+//	default:
+//		printf("输入错误请重新选择\n");
+//		break;
+//	}
+//	return 0;
+//}
+//										复习一下指针相关的知识点
+//函数指针
+//返回值类型 (*指针名)(参数类型列表)
+//指针数组
+//元素类型 *数组名[数组长度]
+//e.g.指针数组：strs是数组，元素是char*（字符串指针）
+//char* strs[] = { "apple", "banana", "cherry" };
+//数组指针
+//元素类型 (*指针名)[数组长度]
+//e.g.声明数组指针p：指向“int类型、长度为3的数组”
+//int (*p)[3];
+//声明	        本质 	  解读（从右往左）	             元素 / 指向内容
+//int* p[3]	    指针数组	  p 是数组，元素是 int* （指针）	 3 个 int 类型指针
+//int (*p)[3]	数组指针	  p 是指针，指向 int[3]（数组）	 指向 1 个长度为 3 的 int 数组
+//
+//矩阵转置
+//int main()
+//{
+//	int n, m;
+//	scanf("%d %d", &n, &m);
+//	int arr[10][10] = { 0 };
+//	int i, j;
+//	for (i = 0; i < n; i++)
+//	{
+//		for (j = 0; j < m; j++)
+//		{
+//			scanf("%d", &arr[i][j]);
+//		}
+//	}
+//	//1 2 3
+//	//4 5 6
+//	//输出     n=2    m=3
+//	//1 4
+//	//2 5
+//	//3 6
+//	for (i = 0; i < m; i++)
+//	{
+//		for (j = 0; j < n; j++)
+//		{
+//			printf("%d ", arr[j][i]);
+//		}
+//		printf("\n");
+//	}
+//	return 0;
+//}
+//上三角矩阵判断
+//3
+//1 2 3
+//0 4 5
+//0 0 6
+//int JudArr(int arr[][3])
+//{
+//	int count = 0;
+//	for (int i = 1; i < 3; i++)
+//	{
+//		for (int j = 0; j < i; j++)
+//		{
+//			if (arr[i][j] == 0)
+//				count++;
+//		}
+//	}
+//	return count == 3 ? 1 : -1;
+//}
+//int main()
+//{
+//	int n;
+//	int arr[10][10] = { 0 };
+//	scanf("%d", &n);
+//	for (int i = 0; i < n; i++)
+//		for (int j = 0; j < n; j++)
+//			scanf("%d", &arr[i][j]);
+//	int ret = JudArr(arr);
+//	if (ret == 1)
+//		printf("Yes\n");
+//	else
+//		printf("No\n");
+//	return 0;
+//}
+//int main()
+//{
+//	int n;
+//	int count = 0;
+//	int arr[10][10] = { 0 };
+//	scanf("%d", &n);
+//	for (int i = 0; i < n; i++)
+//	{
+//		for (int j = 0; j < n; j++)
+//		{
+//			scanf("%d", &arr[i][j]);
+//		}
+//	}
+//	for (int i = 0; i < n; i++)
+//	{
+//		for (int j = 0; j < i; j++)
+//		{
+//			if (arr[i][j] != 0)
+//				goto end;
+//			//也可以这里直接printf然后return 0;
+//			else
+//				count++;
+//		}
+//	}
+//	if (count == n * n)
+//		printf("Yes\n");
+//	else
+//		end:
+//		printf("No\n");
+//	return 0;
+//}
+//判断一个整数序列是否有序
+//sorted或者unsorted
+//int main()
+//{
+//	int arr[100] = { 0 };
+//	int n;
+//	int flag = 1;
+//	scanf("%d", &n);
+//	for (int i = 0; i < n; i++)
+//	{
+//		scanf("%d", &arr[i]);
+//	}
+//	for (int i = 1; i < n - 1; i++)
+//	{
+//		if ((arr[i - 1] < arr[i] && arr[i] > arr[i + 1]) || (arr[i - 1] > arr[i] && arr[i] < arr[i + 1]))
+//			flag = 0;
+//	}
+//	if (flag == 1)
+//		printf("Sorted\n");
+//	else
+//		printf("Unsorted\n");
+//
+//	return 0;
+//}
+//进阶:自定义类型:结构体和联合体和枚举(这两种用的比较多)
+//struct Stu
+//{
+//	char name[20];
+//	int age;
+//}s1,s2;
+//s1 s2是全局的结构体变量
+//在某一个函数里面创建struct Stu s3这样就是局部变量了
+//匿名结构体类型 如下
+//只能用一次
+//struct 
+//{
+//	char name[20];
+//	int age;
+//}s1;
+//int main()
+//{
+//
+//	return 0;
+//}
+//struct Container
+//{
+//	int data;
+//	struct
+//	{ // 匿名结构体
+//		int x;
+//		int y;
+//	}; // 没有成员名！
+//};
+//int main()
+//{
+//	struct Container c;
+//	c.data = 10;
+//	c.x = 20; // 直接访问！就像x是Container的成员一样
+//	c.y = 30; // 直接访问！
+//	printf("%d, %d, %d\n", c.data, c.x, c.y);
+//	return 0;
+//}
+//可以看到，使用匿名结构体后，访问嵌套的成员 x和 y时不再需要写 c.inner.x，而是可以直接写 c.x，代码更加简洁。
+//结构体的自引用
+//这里提一嘴数据结构
+//线形和树形
+struct Node
+{
+	int data;
+	struct Node* next;
+};
 int main()
 {
-	char* c[] = { "ENTER","NEW","POINT","FIRST" };//指针数组
-	char** cp[] = { c + 3,c + 2,c + 1,c };
-	char*** cpp = cp;
-
-	printf("%s\n", **++cpp);//POINT   这里++ --会改变了指针的位置
-	printf("%s\n", *-- * ++cpp + 3);//ER
-	printf("%s\n", *cpp[-2] + 3);//ST
-	//* *(cpp-2)+3
-	printf("%s\n", cpp[-1][-1] + 1);//
-	//*(*(cpp-1)-1)+1
+	sizeof(struct Node);//error
+	//无法计算这个的长度
 	return 0;
 }
 
 
-/*				周日11.23早 西区田径场				体测				   11.23下午 西区游泳馆
-				11.12 15.00		      四级:11.22口语  12.13早上笔试
+//1、系统过完数据结构 —— 所有代码要全部跟着自己实现一遍
+//2、C++新特性、Linux、MySQL
+//3、过算法集训 —— 保持力扣刷题
+//4、高数
+//四级
+/*											  四级:   12.13早上笔试
 									   蓝桥杯报名  ACM三轮选拔周日 14.30-17.00   linux
 									  easyX 控制台 swing 文件流 数据库 shutdown命令 句柄 wmare workstation
 									  Git  PTA上50题 洛谷200题 LeetCode 汉诺塔(小游戏)
 									  英语四级 班主任的科研组 《函数栈帧的创建与销毁》
-							 C语言之后(指针 结构体 动态内存管理)  数据结构 算法 《剑指offer》
-									  107集 108集
+									  数据结构 算法 《剑指offer》
 大一上  1.C语言 中国大学MOOC 翁恺
 		2.《C primer plus》
 		3.大概学到指针和结构体
 		4.菜鸟教程（https://www.runoob.com/）
 		5.B站（C语言小项目）
+
+大一下：1.数据结构与算法基础
+	   2.在学这门课的过程中或者学完之后在力扣(leetcode)和洛谷两个网站去刷算法题，一天一道长期坚持。
+	   3.C语言学完之后就可以开始C++学习
+		1.基础语法跟B站播放量靠前的网课（黑马、尚硅谷、浙大翁恺等)，书的话看一本《C++ Primer plus》
+		2.基础语法学完之后接着补相关技术体系（网络编程、多线程、Linux、数据库等）。参考发的《C++体系学习建议》。
+		3.体系学完之后开始准备项目
+		4.找项目：在github和gitee去找
 */
