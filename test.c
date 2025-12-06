@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 //需求如下
-//实现一个通讯录:
+//实现一个静态通讯录:
 //人的信息:
 //名字+年龄+性别+电话+地址
 //其他功能:
@@ -11,7 +11,11 @@
 //5.修改联系人
 //6.排序
 //7.显示联系人
-#include "Contact.h"
+//一共有3个版本 此为一版本
+//1.静态的版本
+//2.动态的版本
+//3.文件的版本
+#include "Contact.h"//包含自定义的头文件
 void menu()
 {
 	printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -42,17 +46,19 @@ int main()
 			AddContact(&con);
 			break;
 		case 2:
+			DelContact(&con);
 			break;
 		case 3:
+			SearchContact(&con);
 			break;
 		case 4:
+			ModifyContact(&con);
 			break;
 		case 5:
 			ShowContact(&con);
 			break;
 		case 6:
-			break;
-		case 7:
+			SortContact(&con);
 			break;
 		case 0:
 			printf("退出通讯录\n");
@@ -63,3 +69,7 @@ int main()
 	} while (input);
 	return 0;
 }
+
+//排序可以按照意愿来 可以是 名字 年龄 电话等
+//清空屏幕看着清爽
+//一次性多修改几个联系人的信息
