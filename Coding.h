@@ -2,6 +2,7 @@
 
 #include <assert.h>//assert
 #include <ctype.h>//islower isupper toupper tolower
+#include <errno.h>
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -10,3 +11,4 @@
 #include <time.h> // 包含time()函数，用于获取系统时间
 #include <windows.h>//控制台
 //#include <algorithm>
+#include <stddef.h>
