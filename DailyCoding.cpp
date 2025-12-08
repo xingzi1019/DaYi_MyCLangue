@@ -8080,11 +8080,61 @@ sizeof
 //                                                         刚刚上面的分析的舍弃是基于VS的 但并不是所有编译器都这样
 //实现一个通讯录
 //见其他项目文件
-int main()
-{
+//gets fggets 在标准头文件里面<stdio.h>
+//fgets 会读取换行符，需要手动去除
+//int main() 
+//{
+//	char str[20];
+//	printf("请输入字符串: ");
+//	fgets(str, sizeof(str), stdin);  // 读取最多 19 个字符 + '\0'
+//	printf("你输入的是: %s", str);
+//	return 0;
+//}
+//题目:统计并输出某给定字符在给定字符串中出现的次数
+//int main()
+//{
+//	char arr[81];
+//	char ch;
+//	fgets(arr, sizeof(arr), stdin);
+//	// 参数说明：
+//	// 1. 目标字符数组
+//	// 2. 最大读取字符数（包括 '\0'）
+//	// 3. 文件指针（stdin 表示标准输入）
+//	ch = getchar();
+//	int count = 0;
+//	for (int i = 0; arr[i] != '\0'; i++)
+//	{
+//		if (arr[i] == ch)
+//		{
+//			count++;
+//		}
+//	}
+//	printf("%d\n", count);
+//	return 0;
+//}
+//puts的使用 同样在<stdio.h>头文件中
+//int main() 
+//{
+//	char str[] = "Hello";
+//	//自动添加换行符
+//	puts(str);      // 输出: Hello\n
+//	puts("World");  // 输出: World\n
+//	return 0;
+//}
+//getchar的使用
+//从标准输入读取一个字符
+//注意：返回的是 int 类型（可以处理 EOF）
+//基本用法
+//int main() 
+//{
+//	printf("请输入一个字符: ");
+//	int ch = getchar();  // 读取单个字符
+//	printf("你输入的字符是: ");
+//	putchar(ch);  // 输出字符
+//	putchar('\n');
+//	return 0;
+//}
 
-	return 0;
-}
 
 
 //1、系统过完数据结构 —— 所有代码要全部跟着自己实现一遍
