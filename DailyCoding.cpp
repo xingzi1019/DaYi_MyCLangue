@@ -446,7 +446,7 @@ if (a = 5)
 //
 //1. 首先定义了一个字符变量`ch`并初始化为空字符`'\0'`
 //
-//2. `while ((ch = getchar()) != EOF)`是一个循环，功能是：
+//2. while ((ch = getchar()) != EOF)是一个循环，功能是：
 //- 使用`getchar()`函数从标准输入读取一个字符
 //- 将读取到的字符赋值给`ch`
 //- 判断是否读取到了文件结束符`EOF`（在Windows系统中通常通过Ctrl + Z输入，
@@ -8134,16 +8134,441 @@ sizeof
 //	putchar('\n');
 //	return 0;
 //}
+//枚举
+//枚举顾名思义就是⼀⼀列举
+//把可能的取值⼀⼀列举
+//enum Day//枚举常量
+//{
+//	//默认的值是这样的
+//  //这些是常量可以初始化 但是不能赋值
+//	Mon,  //0
+//	Tues, //1
+//	Wed,  //2
+//	Tuur, //3
+//	Fri,  //4
+//	Sat,  //5
+//	Sun   //6
+//};
+//
+//enum Sex
+//{
+//	Male, Female, Secret
+//};
+//
+//enum Color
+//{
+//	RED=1,
+//	GREEN,
+//	BLUE
+//};
+//int main()
+//{
+//	enum Day d = Fri;
+//	printf("%d\n", Mon);//0
+//	printf("%d\n", Tues);//1
+//	printf("%d\n", Wed);//2
+//
+//	printf("%d\n", Male);//0
+//	printf("%d\n", Female);//1
+//	printf("%d\n", Secret);//2
+//
+//	printf("%d\n", RED);//1
+//	printf("%d\n", GREEN);//2
+//	printf("%d\n", BLUE);//3
+//
+//	printf("%d\n",sizeof(enum Day));//4
+//	//在 C 标准中，枚举类型通常实现为 int类型的大小
+//	return 0;
+//}
+//联合体(共同体)
+//是公用内存的 但同一时间联合体的成员只能存在一个
+//union Un
+//{
+//	int a;
+//	char b;
+//};
+//int main()
+//{
+//	union Un u;
+//	//联合体⼤⼩的计算规则:
+//	//联合的⼤⼩⾄少是最⼤成员的⼤⼩
+//	//当最⼤成员⼤⼩不是最⼤对⻬数的整数倍的时候，就要对⻬到最⼤对⻬数的整数倍
+//	printf("%d\n", sizeof(union Un));//4
+//	printf("%p\n", &u);
+//	printf("%p\n", &(u.a));
+//	printf("%p\n", &(u.b));
+//	//运行发现这三个的地址一样 说明确实是公用一块空间
+//	//所以在一些场景是可以节省空间的
+//	return 0;
+//}
+//结构体 枚举 联合体 都是要内存对齐的
+//使用联合体来判断是大端还是小端
+//int check_sys()
+//{
+//	union Un
+//	{
+//		char c;
+//		int i;
+//	}u;
+//	u.i = 1;
+//	return u.c;
+//}
+//int main()
+//{
+//	int ret = check_sys();
+//	if (ret == 1)
+//		printf("小端存储模式\n");
+//	else
+//		printf("大端存储模式\n");
+//
+//	return 0;
+//}
+//进阶:动态内存管理
+//相关关键字
+//malloc
+//free
+//calloc
+//realloc
+//栈区 堆区 静态区
+//栈区:局部变量 形式参数
+//堆区:malloc calloc realloc free
+//静态区:
+//关键字:malloc
+//void* malloc (size_t size);
+//int main()
+//{
+//	int arr[10] = { 0 };//在栈区开辟
+//	//动态内存开辟
+//	//INT_MAX
+//	int* p = (int*)malloc(INT_MAX);//在堆区开辟
+//	if (p == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//使用
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(p + i) = i);
+//	}
+//	//没有free
+//	//并不是说内存空间就不回收了
+//	//当程序退出的时候,系统会自动回收内存空间的
+//	return 0;
+//	//变长数组 得C99
+//	//int n;
+//	//scanf("%d", &n);
+//	//int arr2[n];
+//}
+//int main()
+//{
+//	int arr[10] = { 0 };
+//	int* p = (int*)malloc(INT_MAX);
+//	if (p == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(p + i) = i);
+//	}
+//	free(p);
+//  //void free (void* ptr);//传过去是要释放的空间的起始地址
+//	p = NULL;
+//	//free只是解放了p之前所被编程者输入的内容，而真正解放p本身的是把指针p变为空指针
+//	return 0;
+//}
+//int main()
+//{
+//	while (1)
+//	{
+//		malloc(1);
+//	}
+//	//这串代码只开辟不free释放
+//	//会造成内存泄漏
+//	//调开任务管理器看看
+//	return 0;
+//}
+//free
+//如果参数 ptr 指向的空间不是动态开辟的，那free函数的⾏为是未定义的。
+//如果参数 ptr 是NULL指针，则函数什么事都不做。
+//calloc
+//void* calloc (size_t num, size_t size);
+//num:要开辟的元素的个数
+//size:每个元素的大小
+//int main()
+//{
+//	int* p = (int*)calloc(10, sizeof(int));
+//	//calloc会将他们初始化为0
+//	if (p == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	free(p);
+//	p = NULL;
+//
+//	return 0;
+//}
+//realloc
+//void* realloc (void* ptr, size_t size);
+//ptr:要调整的内存空间的起始地址
+//size:调整之后新⼤⼩
+//返回值为调整之后的内存空间的起始位置
+//int main()
+//{
+//	int* p = (int*)malloc(40);
+//	if (p == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	int i = 0;
+//	for (i = 0; i < 10; i++)
+//	{
+//		*(p + i) = i + 1;
+//	}
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	printf("\n");
+//	//扩容
+//	//分为两种情况
+//	//1.后面有足够的连续的空间直接接上去开辟新的空间
+//	//  并返回原地址
+//	//2.后面的空间不够 会重新寻找一块足够的连续情况并将原空间的数据拷贝到新的空间
+//	//  返回新开辟的地址 同时旧的空间会被释放
+//	int* ptr = (int*)realloc(p, 80);//所以不能直接用p来接收 用一个新的指针来接收
+//	if (NULL != ptr)
+//	{
+//		p = ptr;
+//	}
+//	//for (i = 0; i < 10; i++)
+//	//{
+//	//	printf("%d ", *(p + i));
+//	//}
+//	//free(p);
+//	//p = NULL;
+//	for (i = 0; i < 10; i++)
+//	{
+//		printf("%d ", *(p + i));
+//	}
+//	free(p);
+//	p = NULL;
+//	return 0;
+//	//realloc(NULL,40);
+//	//malloc(40);
+//	//上面这两行代码是等价的
+//}
+//                                       常⻅的动态内存的错误
+//1.对NULL指针的解引⽤操作
+//void test()
+//{
+//	int* p = (int*)malloc(INT_MAX);
+//	*p = 20;//如果p的值是NULL，就会有问题
+//	free(p);
+//}
+//2.对动态开辟空间的越界访问
+//void test()
+//{
+//	int i = 0;
+//	int* p = (int*)malloc(10 * sizeof(int));
+//	if (NULL == p)
+//	{
+//		exit(EXIT_FAILURE);
+//	}
+//	for (i = 0; i <= 10; i++)
+//	{
+//		*(p + i) = i;//当i是10的时候越界访问
+//	}
+//	free(p);
+//}
+//3对非动态开辟内存使⽤free释放
+//void test()
+//{
+//	int a = 10;
+//	int* p = &a;
+//
+//	//.....
+//
+//	free(p);//ok?
+//}
+//4.使⽤free释放⼀块动态开辟内存的⼀部分
+//free没法释放一部分 要释放也只能从头开始释放
+//void test()
+//{
+//	int* p = (int*)malloc(100);
+//	if (NULL == p)
+//	{
+//		printf("%s\n", strerror(errno));
+//	}
+//	for (int i = 0; i < 10; i++)
+//	{
+//		*p = i;
+//		p++;
+//	}
+//	free(p);//p不再指向动态内存的起始位置 故报错
+//}
+//5.对同⼀块动态内存多次释放
+//void test()
+//{
+//	int* p = (int*)malloc(100);
+//	//......
+//	free(p);
+//	//p这里是野指针
+//	//p = NULL;
+//	//把这条野狗拴在树上 就安全多了
+//	//......
+//	free(p);//重复释放 没有上面的p=NULL就会报错 有了就不会报错
+//}
+//6.动态开辟内存忘记释放（内存泄漏）
+//忘记free
+//void test()
+//{
+//	int* p = (int*)malloc(100);
+//	if (NULL != p)
+//	{
+//		*p = 20;
+//	}
+//}
+//
+//int main()
+//{
+//	test();
+//	while (1);
+//}
+//                            动态内存相关经典笔试题
+//void GetMemory(char* p)
+//{
+//	p = (char*)malloc(100);
+//	//这里的p就被赋值为malloc开辟的首元素的地址
+//	//这里p还是形式参数 出了这个函数就销毁0了 但是上面申请的100字节的空间并没有被释放
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	GetMemory(str);
+//	//没有free
+//	strcpy(str, "hello world");//str是NULL解引用会崩溃
+//	printf(str);
+//}
+//修改如下 版本一 法一
+//void GetMemory(char** p)
+//{
+//	*p = (char*)malloc(100);
+//
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	GetMemory(&str);
+//	strcpy(str, "hello world");
+//	printf(str);
+//	free(str);
+//	str = NULL;
+//}
+//版本二 法二
+//char* GetMemory()
+//{
+//	char* p = (char*)malloc(100);
+//	return p;
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	str = GetMemory();
+//	strcpy(str, "hello world");
+//	printf(str);
+//	free(str);
+//	str = NULL;
+//}
+//int main()
+//{
+//	//会发生内存泄漏
+//	Test();
+//	return 0;
+//}
+//对于printf的补充
+//int main()
+//{
+//	printf("hello world\n");
+//	//传给printf的不是字符串 而是首元素地址
+//	const char* p = "hello world\n";
+//	printf(p);
+//	return 0;
+//}
+//指出下列代码的问题
+//int* f1(void)
+//{
+//	int x = 10;
+//	return (&x);
+//	//野指针
+//}
+//1.x是局部变量
+//在函数 f1()内部声明的 int x = 10;
+//存储在栈内存中
+//2.函数结束时内存被释放
+//当 f1()执行完毕返回时，局部变量 x的生命周期结束
+//其占用的栈内存被系统回收，可能被其他数据覆盖
+//3.返回的指针变成野指针
+//& x返回的地址指向的内存已经不再有效
+//后续通过这个指针访问数据是未定义行为
+//应该这么修改
+//int* f1(void)
+//{
+//	static int x = 10;//static使变量生命周期延长到整个程序
+//	return (&x);
+//}
+//再来一题
+//int* f2(void)
+//{
+//	int* ptr;
+//	*ptr = 10;
+//	return ptr;//编译器会直接报错
+//	//也是野指针 ptr没有初始化 返回的是随机的地址
+//}
+//int main()
+//{
+//	f1();
+//	f2();
+//	return 0;
+//}
+//很经典的死循环的一道题
+//int main()
+//{
+//	long i;
+//	long a[16];
+//	for (i = 0; i <= 17; i++)
+//	{
+//		a[i] = 0;//数组越界访问 刚好覆盖了i的地址
+//      //i的地址在数组a的地址之后越界时刚好覆盖了i 所以i的值刚好更新了
+//      //因此执行死循环
+//		printf("%d", i);
+//	}
+//	return 0;
+//}
+int main()
+{
+
+	return 0;
+}
 
 
 
 //1、系统过完数据结构 —— 所有代码要全部跟着自己实现一遍
 //2、C++新特性、Linux、MySQL
 //3、过算法集训 —— 保持力扣刷题
-//4、高数
-//四级
-/*											  四级:   12.13早上笔试
-									   蓝桥杯报名  ACM三轮选拔周日 14.30-17.00   linux
+//4、高数 四级                                           鹏哥150集
+/*									  蓝桥杯报名  ACM三轮选拔12.18 14.30-17.00   linux
 									  easyX 控制台 swing 文件流 数据库 shutdown命令 句柄 wmare workstation
 									  Git  PTA上50题 洛谷200题 LeetCode 汉诺塔(小游戏)
 									  英语四级 班主任的科研组 《函数栈帧的创建与销毁》
