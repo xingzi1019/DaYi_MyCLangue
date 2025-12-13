@@ -1824,6 +1824,10 @@ int main(void)
 //	int b = 0;
 //	int c = 0;
 //	scanf("%d %d", &a, &b);
+//  //24 % 18
+//  //24 % 18  6
+//  //18 %  6  0
+//  //那么6就是了
 //	while (c = a % b)
 //	{
 //		a = b;
@@ -8556,6 +8560,356 @@ sizeof
 //	}
 //	return 0;
 //}
+//很容易犯错的的一个经典错误
+//char* GetMemory(void)
+//{
+//	char p[] = "hello world";
+//	return p;
+//}
+//p是函数内的局部数组，存储在栈内存中
+//函数返回时，p的内存被释放回收
+//str指向的是已经无效的内存地址
+//void Test(void)
+//{
+//	char* str = NULL;
+//	str = GetMemory();//野指针
+//	//0x cccccccc
+//	printf(str);
+//}
+////下面这个同样的道理
+//int* test()
+//{
+//	int a = 10;
+//	return &a;
+//	//a出了这个函数就销毁了
+//}
+//int main()
+//{
+//	Test();
+//	int* p = test();
+//	printf("%p\n", p);
+//	printf("%d\n", *p);
+//	return 0;
+//}
+//void GetMemory(char** p, int num)
+//{
+//	*p = (char*)malloc(num);
+//}
+//void Test(void)
+//{
+//	char* str = NULL;
+//	GetMemory(&str, 100);
+//	strcpy(str, "hello");
+//	printf(str);//可以打印 但是会内存泄漏
+//	free(str);//ADD这两行代码就没问题了
+//	str = NULL;//ADD这两行代码就没问题了
+//}
+//int main()
+//{
+//	Test();
+//	return 0;
+//}
+//这里复习一下野指针
+//野指针是指指向无效内存区域的指针，是C/C++编程中最危险的bug之一。
+//有以下类型和成因
+//1.未初始化的指针
+//int* p;        // 未初始化，值随机
+//*p = 10;       // 危险！操作未知内存区域
+//2.指向已释放内存的指针（悬空指针）
+//int* p = (int*)malloc(sizeof(int));
+//free(p);       // 内存已释放
+//*p = 20;       // 野指针！访问已释放内存
+//3.超出作用域的局部变量指针
+//int* GetMemory()
+//{
+//	int value = 42;
+//	return &value;  // 返回局部变量地址
+//}
+//int* p = GetMemory();
+//printf("%d", *p);   // 野指针！value已销毁
+//4. 指针运算越界
+//int arr[5] = { 1,2,3,4,5 };
+//int* p = arr;
+//for (int i = 0; i <= 5; i++)
+//{   // i=5时越界
+//	*(p + i) = i;              // 最后一次是野指针操作
+//}
+//继续刷题
+//void Test(void)
+//{
+//	char* str = (char*)malloc(100);
+//	strcpy(str, "hello");
+//	free(str);
+//	//str = NULL;//不加这行就是错的 分手了没有忘掉还送东西到别人家里 属与非法访问
+//	if (str != NULL)
+//	{
+//		strcpy(str, "world");
+//		printf(str);
+//	}
+//}
+//int main()
+//{
+//	Test();
+//	return 0;
+//}
+//小乐乐和欧几里得
+//输入n和m 求n和m的最大公约数和最小公倍数之和          远古时期的笔记也有
+//int yue(int n, int m)
+//{
+//	//暴力遍历法
+//	//for (int i = n > m ? n : m; i < n > m ? n : m; i--)
+//	//{
+//	//	if (n % i == 0 && m % i == 0)
+//	//	{
+//	//		return i;
+//	//	}
+//	//}
+//	//辗转相除法
+//	int c = 0;
+//	int max = n > m ? n : m;
+//	int min = n < m ? n : m;
+//	while (c = max % min)
+//	{
+//		//24 % 18  6
+//		//18    6  
+//		//18 %  6 
+//		max = min;
+//		min = c;
+//	}
+//	return min;
+//}
+////补充数学知识:两个数的乘积等于这两个数的最大公约数和最小公倍数的积
+////            12 * 8 = 96 = 4 * 24
+////所以算出一个之后就可以去算另外一个了
+//int bei(int n, int m)
+//{
+//	//暴力遍历法
+//	//for (int i = n > m ? n : m; i > 0; i++)
+//	//{
+//	//	if (i % n == 0 && i % m == 0)
+//	//	{
+//	//		return i;
+//	//	}
+//	//}
+//	//辗转相除法 后 利用上面的数字知识得最大公约数 
+//	int c = 0;
+//	int ret = 0;
+//	int max = n > m ? n : m;
+//	int min = n < m ? n : m;
+//	while (c = max % min)
+//	{
+//		max = min;
+//		min = c;
+//	}
+//	return n * m / min;
+//}
+//int main()
+//{
+//	int n, m;
+//	scanf("%d %d", &n, &m);
+//	int max = yue(n, m);
+//	printf("最大公约数为%d\n", max);
+//	int min = bei(n, m);
+//	printf("最小公倍数为%d\n", min);
+//	int sum = max + min;
+//	printf("最大公约数和最小公倍数之和为%d\n", sum);
+//	return 0;
+//}
+//打印空心正方形图案
+//int main()
+//{
+//	int n;
+//	//@ @ @ @
+//	//@     @
+//	//@     @
+//	//@ @ @ @
+//	//法一
+//	//while (scanf("%d", &n) == 1)
+//	//{
+//	//	for (int i = 0; i < n; i++)
+//	//	{
+//	//		for (int j = 0; j < n; j++)
+//	//		{
+//	//			if (i != 0 && i != n - 1)
+//	//			{
+//	//				if (j == 0 || j == n - 1)
+//	//				{
+//	//					printf("@ ");
+//	//				}
+//	//				else
+//	//				{
+//	//					printf("  ");
+//	//				}
+//	//			}
+//	//			else
+//	//			{
+//	//				printf("@ ");
+//	//			}
+//	//		}
+//	//		printf("\n");
+//	//		//printf("\n");
+//	//	}
+//	//}
+//	//法二
+//	while (scanf("%d", &n) == 1)
+//	{
+//		char arr[15][15];
+//		memset(arr, ' ', sizeof(arr));
+//		for (int i = 0; i < n; i++)
+//		{
+//			for (int j = 0; j < n; j++)
+//			{
+//				if ((i == 0 || j == 0) || (i == n - 1 || j == n - 1))
+//				{
+//					arr[i][j] = '@';
+//				}
+//			}
+//		}
+//		for (int i = 0; i < n; i++)
+//		{
+//			for (int j = 0; j < n; j++)
+//			{
+//				printf("%c ", arr[i][j]);
+//			}
+//			printf("\n");
+//		}
+//	}
+//	return 0;
+//}
+//柔性数组
+//也许你从来没有听说过柔性数组（flexible array）这个概念，但是它确实是存在的。
+//C99 中，结构体中的最后一个元素允许是未知大小的数组，这就叫做『柔性数组』成员。
+//柔性数组的特点
+//1.结构中的柔性数组成员前面必须至少一个其他成员
+//2.sizeof 返回的这种结构大小不包括柔性数组的内存
+//3.包含柔性数组成员的结构用malloc()函数进行内存的动态分配，并且分配的内存应该大于结构的大小
+//以适应柔性数组的预期大小
+//typedef struct st_type
+//{
+//	int i;
+//	int a[0];//柔性数组成员
+//}type_a;
+////有些编译器会报错无法编译可以改成：
+//struct st_type2
+//{
+//	int i;
+//	int a[];//柔性数组成员
+//}type_a2;
+//int main()
+//{
+//	int sz = sizeof(st_type);
+//	printf("%d\n", sz);//4
+//	st_type s;
+//	printf("%d\n", sizeof(s));//4
+//	//所以不能这么创建变量 而应该是要使用malloc等
+//	//柔性数组的使用
+//	struct st_type2* ps = (struct st_type2*)malloc(sizeof(struct st_type2) + 40);
+//	if (ps == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	ps->i = 100;
+//	printf("%d\n", ps->i);
+//	for (int i = 0; i < 10; i++)
+//	{
+//		ps->a[i] = i + 1;
+//	}
+//	for (int j = 0; j < 10; j++)
+//	{
+//		printf("%d ", ps->a[j]);
+//	}
+//	struct st_type2* ptr = (struct st_type2*)realloc(ps, sizeof(struct st_type2) + 80);
+//	if (ptr != NULL)
+//	{
+//		ps = ptr;
+//		ptr = NULL;
+//	}
+//	free(ps);
+//	ps = NULL;
+//	return 0;
+//}
+//上面的是柔性数组开辟 上面的柔性数组开辟其实更好更不容易出错
+//malloc的次数越多 所产生的内存碎片就越多 内存的利用率就不高
+//如果我们的代码是在一个给别人用的函数中，你在里面做了二次内存分配，并把整个结构体返回给用户。
+//用户调用free可以释放结构体，但是用户并不知道这个结构体内的成员也需要free，
+//所以你不能指望用户来发现这个事。
+//所以如果我们把结构体的内存以及其成员要的内存一次性分配好了
+//并返回给用户一个结构体指针，用户做一次free就可以把所有的内存也给释放掉。
+//柔性数组除了这么一个优势之外还有另一个优势
+//连续的内存有益于提高访问速度，也有益于减少内存碎片
+//(其实，我个人觉得也没多高了，反正你跑不了要用做偏移量的加法来寻址)
+//struct S
+//{
+//	int n;
+//	int* arr;
+//};
+//int main()
+//{
+//	struct S* ps = (struct S*)malloc(sizeof(struct S));
+//	if (ps == NULL)
+//	{
+//		return 1;
+//	}
+//	ps->n = 100;
+//	ps->arr = (int*)malloc(40);
+//	//这种方法申请的空间是不连续的 但是上面两种申请的空间是连续的
+//	if (ps->arr == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	for (int i = 0; i < 10; i++)
+//	{
+//		ps->arr[i] = i + 1;//??????????????????????????????????
+//		//理解起来蛮有难度的
+//		//int* arr声明的是一个指针，但通过malloc分配内存后，它可以像数组一样使用下标
+//		//[]操作可以使用 这里上面的是int*类型 所以一次4个字节的指针步长
+//	}
+//	for (int i = 0; i < 10; i++)
+//	{
+//		printf("%d ", ps->arr[i]);
+//	}
+//	//扩容
+//	int* ptr = (int*)realloc(ps->arr, 80);
+//	if (ptr == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	else
+//	{
+//		// 扩容成功，更新指针
+//		ps->arr = ptr;//现在ps->arr指向新的80字节内存
+//	}
+//	//释放
+//	//必须先free(ps->arr)，再free(ps)，否则会丢失arr指针导致内存泄漏
+//	free(ps->arr);//释放数组内存
+//	free(ps);//释放结构体内存
+//	ps = NULL;
+//	return 0;
+//}
+//						语言文件操作
+//1. 为什么使用文件
+//2. 什么是文件
+//3. 文件的打开和关闭
+//4. 文件的顺序读写
+//5. 文件的随机读写
+//6. 文本文件和二进制文件
+//7. 文件读取结束的判定
+//8. 文件缓冲区
+//
+//文件有两种：程序文件、数据文件（从文件功能的角度来分类的）
+//1 程序文件
+//包括源程序文件(后缀为.c)目标文件(windows环境后缀为.obj),可执行程序(windows环境后缀为.exe)
+//2 数据文件
+//文件的内容不一定是程序,而是程序运行时读写的数据
+//比如程序运行需要从中读取数据的文件,或者输出内容的文件。
+//文件名
+//一个文件要有一个唯一的文件标识，以便用户识别和引用
+//文件名包含3部分：文件路径 + 文件名主干 + 文件后缀
+//例如：              c:\code\test.txt
+//为了方便起见,文件标识常被称为文件名
 int main()
 {
 
@@ -8563,7 +8917,7 @@ int main()
 }
 
 
-
+//多写写博客
 //1、系统过完数据结构 —— 所有代码要全部跟着自己实现一遍
 //2、C++新特性、Linux、MySQL
 //3、过算法集训 —— 保持力扣刷题
