@@ -8084,7 +8084,7 @@ sizeof
 //                                                         刚刚上面的分析的舍弃是基于VS的 但并不是所有编译器都这样
 //实现一个通讯录
 //见其他项目文件
-//gets fggets 在标准头文件里面<stdio.h>
+//gets fgets 在标准头文件里面<stdio.h>
 //fgets 会读取换行符，需要手动去除
 //int main() 
 //{
@@ -8910,11 +8910,113 @@ sizeof
 //文件名包含3部分：文件路径 + 文件名主干 + 文件后缀
 //例如：              c:\code\test.txt
 //为了方便起见,文件标识常被称为文件名
+//文件指针
+//缓冲文件系统中,关键的概念是“文件类型指针”,简称“文件指针”.
+//每个被使用的文件都在内存中开辟了一个相应的文件信息区
+//用来存放文件的相关信息（如文件的名字,文件状态及文件当前的位置等）
+//这些信息是保存在一个结构体变量中的.该结构体类型是有系统声明的,取名FILE.
+//文件的打开
+//fopen
+//FILE *fopen( const char *filename, const char *mode ); 在<stdio.h>中
+//int main()
+//{
+//	//打开文件
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;//和malloc free那些类似 应该挺好理解的
+//	return 0;
+//}
+//文件的顺序读写 
+//
+//      功能      函数名      适用于       函数原型
+//  字符输入函数	 fgetc		所有输入流  int fgetc( FILE *stream );
+//  字符输出函数	 fputc		所有输出流  int fputc( int c, FILE *stream );
+//文本行输入函数  fgets		所有输入流  char *fgets( char *string, int n, FILE *stream );
+//文本行输出函数  fputs		所有输出流  int fputs( const char *string, FILE *stream );
+//格式化输入函数  fscanf		所有输入流  int fscanf( FILE *stream, const char *format [, argument ]... );
+//格式化输出函数  fprintf		所有输出流  int fprintf( FILE *stream, const char *format [, argument ]...);
+//   二进制输入   fread      文件       size_t fread( void *buffer, size_t size, size_t count, FILE *stream );
+//   二进制输出   fwrite     文件       size_t fwrite( const void *buffer, size_t size, size_t count, FILE *stream );
+// 
+//写文件
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//写文件
+//	fputc('!', pf);//int fputc( int c, FILE *stream ); <stdio.h>
+//	char i = 'a';
+//	for (i = 'a'; i <= 'z'; i++)
+//	{
+//		fputc(i, pf);
+//		fputc(' ', pf);
+//	}
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//读文件
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//写文件
+//	//int ch = fgetc(pf);
+//	//printf("%c\n", ch);
+//	//ch = fgetc(pf);
+//	//printf("%c\n", ch);
+//	//ch = fgetc(pf);
+//	//printf("%c\n", ch);
+//	//读取并更新:当你调用 fgetc(stream)时,它会做两件事：
+//	//	读取:从当前文件位置指示器指向的位置读取一个字符(一个字节)
+//	//	更新:将文件位置指示器向前移动一个位置,指向下一个要读取的字符
+//	int ch = 0;
+//	while ((ch = fgetc(pf) != EOF))
+//	{
+//		printf("%c ", ch);
+//	}
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//写一行数据
 int main()
 {
-
+	FILE* pf = fopen("test.txt", "a");
+	if (pf == NULL)
+	{
+		printf("%s\n", strerror(errno));
+		return 1;
+	}
+	//写一行数据
+	fputs("hello XzDream ", pf);
+	fputs("hello XzDream\n", pf);
+	fputs("hello XzDream\n", pf);
+	//fopen"w"的话如果文件里面有内容 会把文件里面的内容销毁
+	//fopen"a"的话则不会销毁 "a"是追加
+//关闭文件
+	fclose(pf);
+	pf = NULL;
 	return 0;
 }
+
+
 
 
 //多写写博客
