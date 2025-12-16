@@ -1,21 +1,16 @@
 #define _CRT_SECURE_NO_WARNINGS 1
-//需求如下
-//实现一个静态通讯录:
-//人的信息:
-//名字+年龄+性别+电话+地址
-//其他功能:
-//1.存放100个人的信息
-//2.增加联系人
-//3.删除指定联系人
-//4.查找联系人
-//5.修改联系人
-//6.排序
-//7.显示联系人
-//一共有3个版本 此为一版本
-//1.静态的版本
-//2.动态的版本
-//3.文件的版本
-#include "Contact.h"//包含自定义的头文件
+//动态文件的版本
+#include "Contact2.h"
+enum Option
+{
+	EXIT,
+	ADD,
+	DEL,
+	SEARCH,
+	MODIFY,
+	SHOW,
+	SORT
+};
 void menu()
 {
 	printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
@@ -42,25 +37,27 @@ int main()
 		scanf("%d", &input);
 		switch (input)
 		{
-		case 1:
+		case ADD:
 			AddContact(&con);
 			break;
-		case 2:
+		case DEL:
 			DelContact(&con);
 			break;
-		case 3:
+		case SEARCH:
 			SearchContact(&con);
 			break;
-		case 4:
+		case MODIFY:
 			ModifyContact(&con);
 			break;
-		case 5:
+		case SHOW:
 			ShowContact(&con);
 			break;
-		case 6:
+		case SORT:
 			SortContact(&con);
 			break;
-		case 0:
+		case EXIT:
+			SaveContact(&con);
+			DestoryContact(&con);
 			printf("退出通讯录\n");
 			break;
 		default:
