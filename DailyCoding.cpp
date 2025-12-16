@@ -10,7 +10,6 @@
 //#include <windows.h>//控制台
 //#include <algorithm>
 #include "Coding.h"
-#include <cstddef>
 
 //以下为两个数四则运算需要调用的函数
 //int Add(int x, int y)
@@ -8996,26 +8995,330 @@ sizeof
 //	return 0;
 //}
 //写一行数据
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "a");
+//	if (pf == NULL)
+//	{
+//		printf("%s\n", strerror(errno));
+//		return 1;
+//	}
+//	//写一行数据
+//	fputs("hello XzDream ", pf);
+//	fputs("hello XzDream\n", pf);
+//	fputs("hello XzDream\n", pf);
+//	//fopen"w"的话如果文件里面有内容 会把文件里面的内容销毁
+//	//fopen"a"的话则不会销毁 "a"是追加
+////关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		//printf("%s\n", strerror(errno));
+//		perror("fopen");//perror:printf error 打印错误信息
+//		return 1;
+//	}
+//	//读一行数据
+//	char arr[20];
+//	fgets(arr, 10, pf);
+//	printf("%s\n", arr);
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//struct S
+//{
+//	char arr[10];
+//	int age;
+//	float score;
+//};
+//int main()
+//{
+//	struct S s = { "zhangshan",25,59.9f };
+//	//打开文件
+//	FILE* pf = fopen("test.txt", "w");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//
+//	fprintf(pf, "%s %d %.1f\n", s.arr, s.age, s.score);
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//int main()
+//{
+//	struct S s = { 0 };
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	fscanf(pf, "%s %d %f\n", s.arr, &(s.age), &(s.score));
+//	//关于为什么写write是fprintf和读read为什么是fscanf
+//	//把fscanf理解成扫描就可以了
+//	//输入就是输入到内存，输出就是从内存输出 
+//	//scanf	    输入到内存         printf	从内存输出
+//	//fscanf	从文件输入到内存   fprintf	从内存输出到文件
+//	//printf("%s %d %f\n", s.arr, s.age, s.score);
+//	fprintf(stdout, "%s %d %f\n", s.arr, s.age, s.score);
+//	//打印到屏幕上面去
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//流
+//任何一个C程序,只要运行起来就默认打开3个流
+//FILE* stdin  ->标准输入流(键盘)
+//FILE* stdout ->标准输出流(屏幕)
+//FILE* stderr ->标准错误流(屏幕)
+//输入流：数据从外部设备流入程序(如 stdin、fopen打开的文件用于读)
+//输出流：数据从程序流向外部设备(如 stdout、fopen打开的文件用于写)
+//fread fwrite
+//struct S
+//{
+//	char arr[10];
+//	int age;
+//	float score;
+//};
+//int main()
+//{
+//	struct S s = { 0 };
+//	//以二进制的形式写到文件中
+//	FILE* pf = fopen("test.txt", "rb");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	//二进制的方式读
+//	fread(&s, sizeof(struct S), 1, pf);
+//	printf("%s %d %f\n", s.arr, s.age, s.score);
+//	//
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//int main()
+//{
+//	struct S s = { "zhangsan",25,50.f };
+//	//以二进制的形式写到文件中
+//	FILE* pf = fopen("test.txt", "wb");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//	}
+//	//二进制的方式写
+//	fwrite(&s, sizeof(struct S), 1, pf);
+//	//
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//sscanf 
+//把字符串的内存转换为格式化的数据
+//sprintf
+//把一个格式化的数据转换成字符串
+//struct S
+//{
+//	char arr[10];
+//	int age;
+//	float score;
+//};
+//int main()
+//{
+//	struct S s = { "zhangsan", 20, 55.5f };
+//	struct S tmp = { 0 };
+//	char buf[100] = { 0 };
+//	sprintf(buf, "%s %d %f", s.arr, s.age, s.score);
+//	//把s中格式化的数据放到字符串buf中
+//	printf("字符串的形式打印%s\n", buf);
+//
+//	sscanf(buf, "%s %d %f", tmp.arr, &(tmp.age), &(tmp.score));
+//	//从字符串s中获取一个格式化的数据到tmp中
+//	printf("格式化的形式打印%s %d %f", tmp.arr, tmp.age, tmp.score);
+//	return 0;
+//}
+//文件的随机读写
+//fseek
+//根据文件指针的位置和偏移量来定位文件指针
+//int fseek ( FILE * stream, long int offset, int origin );
+//ftell   
+//返回文件指针相对于起始位置的偏移量
+//long int ftell ( FILE * stream );
+//rewind
+//让文件指针的位置回到文件的起始位置
+//void rewind( FILE *stream );
+//SEEK_SET
+//SEEK_SET表示文件开头(Start of File),是 fseek()函数的第三个参数（定位模式）的可选值之一。
+//fseek()的作用是将文件的读写指针（File Position Indicator）移动到指定位置，而 SEEK_SET明确了移动的参考点是“文件的开头”。
+//SEEK_CUR
+//含义:当前读写位置 点醒用途:相对当前位置移动（如跳过 n 字节）
+//int main()
+//{
+//	//以二进制的形式写到文件中
+//	FILE* pf = fopen("test.txt", "r");
+//	if (pf == NULL)
+//	{
+//		perror("fopen");
+//		return 1;
+//	}
+//	fseek(pf, 2, SEEK_SET);
+//	int ch = fgetc(pf);
+//	printf("%d ", ftell(pf));//3
+//	printf("%c\n", ch);//c
+//	ch = fgetc(pf);
+//	printf("%d ", ftell(pf));//4
+//	printf("%c\n", ch);//d
+//	fseek(pf, 2, SEEK_CUR);
+//	ch = fgetc(pf);
+//	printf("%d ", ftell(pf));//7
+//	printf("%c\n", ch);//g
+//	fseek(pf, -3, SEEK_END);//文件实际是 abcdefghijklmn\r\n（16 字节，\r是第 14 字节，\n是第 15 字节）
+//	//所以这里需要-3
+//	ch = fgetc(pf);
+//	printf("%d ", ftell(pf));//14
+//	printf("%c\n", ch);//n
+//	rewind(pf);
+//	ch = fgetc(pf);//重置文件指针的偏移量
+//	printf("%d ", ftell(pf));//1
+//	printf("%c\n", ch);//a
+//	//关闭文件
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//文本文件和二进制文件
+//int main()
+//{
+//	int a = 10000;
+//	FILE* pf = fopen("test.txt", "wb");
+//	fwrite(&a, 4, 1, pf);//二进制的形式写到文件中
+//	//看的时候注意大小端
+//	fclose(pf);
+//	pf = NULL;
+//	return 0;
+//}
+//文件读取结束的判定
+//被错误使用的feof
+//feof
+//int feof(FILE *stream);
+//牢记：在文件读取过程中，不能用feof函数的返回值直接用来判断文件的是否结束。
+//而是应用于当文件读取结束的时候，判断是读取失败结束，还是遇到文件尾结束。
+//1. 文本文件读取是否结束，判断返回值是否为 EOF （ fgetc ），或者 NULL （ fgets ）
+//例如：
+//fgetc 判断是否为 EOF .
+//fgets 判断返回值是否为 NULL .
+//2. 二进制文件的读取结束判断，判断返回值是否小于实际要读的个数。
+//例如：
+//fread判断返回值是否小于实际要读的个数。
+//int main(void)
+//{
+//	int c; // 注意：int，非char，要求处理EOF
+//	FILE* fp = fopen("test.txt", "r");
+//	if (!fp) //NULL本身是0 可以速览定义看一下的
+//	{
+//		perror("File opening failed");
+//		return EXIT_FAILURE;
+//	}
+//	//fgetc 当读取失败的时候或者遇到文件结束的时候，都会返回EOF
+//	while ((c = fgetc(fp)) != EOF) // 标准C I/O读取文件循环
+//	{
+//		putchar(c);
+//	}
+//	//判断是什么原因结束的
+//	if (ferror(fp))
+//		puts("I/O error when reading");
+//	else if (feof(fp))
+//		puts("End of file reached successfully");
+//	fclose(fp);
+//}
+//enum
+//{
+//	SIZE = 5
+//};
+//int main(void)
+//{
+//	double a[SIZE] = { 1.,2.,3.,4.,5. };
+//	FILE* fp = fopen("test.bin", "wb"); // 必须用二进制模式
+//	if (fp == NULL)
+//	{
+//		perror("错误信息");
+//		return 1;  // 或 exit(1)
+//	}
+//	fwrite(a, sizeof * a, SIZE, fp); // 写 double 的数组
+//	fclose(fp);
+//	double b[SIZE];
+//	fp = fopen("test.bin", "rb");
+//	size_t ret_code = fread(b, sizeof * b, SIZE, fp); // 读 double 的数组
+//	if (ret_code == SIZE)
+//	{
+//		puts("Array read successfully, contents: ");
+//		for (int n = 0; n < SIZE; ++n) printf("%f ", b[n]);
+//		putchar('\n');
+//	}
+//	else
+//	{ // error handling
+//		if (feof(fp))//判断是否是遇到文件末尾而结束
+//		{
+//			printf("Error reading test.bin: unexpected end of file\n");
+//		}
+//		else if (ferror(fp))//判断是否是读的时候遇到错误而结束的
+//		{
+//			perror("Error reading test.bin");
+//		}
+//	}
+//	fclose(fp);
+//}
+//文件缓冲区
+//为什么需要缓冲区？
+//直接向硬件设备（如磁盘、屏幕）读写数据效率极低（比如写一个字符就触发一次磁盘操作）。
+//缓冲区的作用是：将数据暂存于内存中，积累到一定量后再批量读写硬件，减少硬件交互次数，大幅提升性能。
+//不同的编译器的缓冲区的大小会有所差异
+//int main()
+//{
+//	FILE* pf = fopen("test.txt", "w");
+//	fputs("abcdef", pf);//先将代码放在输出缓冲区
+//	printf("睡眠10秒-已经写数据了，打开test.txt文件，发现文件没有内容\n");
+//	Sleep(10000);
+//	printf("刷新缓冲区\n");
+//	fflush(pf);//刷新缓冲区时，才将输出缓冲区的数据写到文件（磁盘）
+//	//注：fflush 在高版本的VS上不能使用了
+//	printf("再睡眠10秒-此时，再次打开test.txt文件，文件有内容了\n");
+//	Sleep(10000);
+//	fclose(pf);
+//	//注：fclose在关闭文件的时候，也会刷新缓冲区
+//	pf = NULL;
+//	return 0;
+//}
+//程序环境和预处理
+//程序的翻译环境
+//程序的执行环境
+//详解：C语言程序的编译 + 链接
+//预定义符号介绍
+//预处理指令 #define
+//宏和函数的对比
+//预处理操作符#和##的介绍
+//命令定义
+//预处理指令 #include
+//预处理指令 #undef
+//条件编译
+//test.c 编译器处理后变成 test.obj(称为目标文件)
 int main()
 {
-	FILE* pf = fopen("test.txt", "a");
-	if (pf == NULL)
-	{
-		printf("%s\n", strerror(errno));
-		return 1;
-	}
-	//写一行数据
-	fputs("hello XzDream ", pf);
-	fputs("hello XzDream\n", pf);
-	fputs("hello XzDream\n", pf);
-	//fopen"w"的话如果文件里面有内容 会把文件里面的内容销毁
-	//fopen"a"的话则不会销毁 "a"是追加
-//关闭文件
-	fclose(pf);
-	pf = NULL;
+
 	return 0;
 }
-
 
 
 
@@ -9025,7 +9328,7 @@ int main()
 //3、过算法集训 —— 保持力扣刷题
 //4、高数 四级                                           鹏哥150集
 /*									  蓝桥杯报名  ACM三轮选拔12.18 14.30-17.00   linux
-									  easyX 控制台 swing 文件流 数据库 shutdown命令 句柄 wmare workstation
+									  easyX 控制台 swing 数据库 shutdown命令 句柄 vwmare workstation
 									  Git  PTA上50题 洛谷200题 LeetCode 汉诺塔(小游戏)
 									  英语四级 班主任的科研组 《函数栈帧的创建与销毁》
 									  数据结构 算法 《剑指offer》
