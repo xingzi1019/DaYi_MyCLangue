@@ -9314,29 +9314,606 @@ sizeof
 //预处理指令 #undef
 //条件编译
 //test.c 编译器处理后变成 test.obj(称为目标文件)
-int main()
-{
+//编译 + 链接
+//看附图 手机相册命名为“编译链接”
+//组成一个程序的每个源文件通过编译过程分别转换成目标代码（object code）。
+//每个目标文件由链接器（linker）捆绑在一起，形成一个单一而完整的可执行程序。
+//链接器同时也会引入标准C函数库中任何被该程序所用到的函数，而且它可以搜索程序员个人
+//的程序库，将其需要的函数也链接到程序中
+//编译分成三个部分:预编译/预处理 --> 编译 --> 汇编   
+//之后链接
+//extern int add(int x,int y);
+////在其他文件里面找到add 发生在链接阶段
+//int main()
+//{
+//	int a = 1;
+//	int b = 2;
+//	printf("%d\n",add(a,b));//3
+//	return 0;
+//}
+//int main()
+//{
+//	FILE* pf = fopen("long.txt", "w");
+//	if (NULL == pf)
+//	{
+//		perror("errno");
+//		return EXIT_FAILURE;//1
+//		//return EXIT_SUCCESS;//0
+//	}
+//	for (int i = 0; i < 10; i++)
+//	{
+//		fprintf(pf, "File:%s Line:%d Time:%s CiShu:%d\n", __FILE__, __LINE__, __TIME__, i);
+//	}
+//	return EXIT_SUCCESS;
+//}
+//__FILE__      //进行编译的源文件
+//__LINE__     //文件当前的行号
+//__DATE__    //文件被编译的日期
+//__TIME__    //文件被编译的时间
+//__STDC__    //如果编译器遵循ANSI C，其值为1，否则未定义   //VS不遵循
+//#define 定义标识符
+//#define MAX 1000
+//#define reg register          //为 register这个关键字，创建一个简短的名字
+//#define do_forever for(;;)     //用更形象的符号来替换一种实现
+//#define CASE break;case        //在写case语句的时候自动把 break写上。
+//// 如果定义的 stuff过长，可以分成几行写，除了最后一行外，每行的后面都加一个反斜杠(续行符)。
+//#define DEBUG_PRINT printf("file:%s\tline:%d\t date:%s\ttime:%s\n" ,\
+//__FILE__,__LINE__ ,\
+//__DATE__,__TIME__ )   //上面这两个斜杠叫做续行符 转义了回车 让回车不再是回车
+//#define MAX 1000
+//#define STR "only for one"
+//#define print printf("hehe\n")
+//int main()
+//{
+//	print;
+//	printf("%d\n", MAX);
+//	printf("%s\n", STR);
+//	return 0;
+//}
+//学习Git
+//一条龙 干到底  顺便把GitHub和Gitee给搞好
+//用Cursor制作冬至贺卡
+//宏定义时考虑到运算优先级和结合性的问题 所以不要吝啬括号
+//#define SQUARE1(X) ((X)*(X))
+//#define SQUARE2(X) X*X
+////所以写宏时不要吝啬括号
+//int main()
+//{
+//	int r1 = SQUARE1(5 + 1);
+//	int r2 = SQUARE2(5 + 1);
+//	printf("%d\n", r1);//36  ((6)*(6))
+//	printf("%d\n", r2);//11
+//}
+//#define DOUBLE1(X) (X)+(X)
+//#define DOUBLE2(X) ((X)+(X))
+//int main()
+//{
+//	int i = 10 * DOUBLE1(3);
+//	printf("%d\n", i);//33    = 10*3+3
+//	int j = 10 * DOUBLE2(3);
+//	printf("%d\n", j);//60    = 10*((3)+(3))
+//}
+//#define 替换规则
+//在程序中扩展#define定义符号和宏时，需要涉及几个步骤。
+//1. 在调用宏时，首先对参数进行检查，看看是否包含任何由#define定义的符号。如果是，它们首先
+//被替换。
+//2. 替换文本随后被插入到程序中原来文本的位置。对于宏，参数名被他们的值替换。
+//3. 最后，再次对结果文件进行扫描，看看它是否包含任何由#define定义的符号。如果是，就重复上
+//述处理过程。
+//注意：
+//1. 宏参数和#define 定义中可以出现其他#define定义的变量。但是对于宏，不能出现递归。
+//2. 当预处理器搜索#define定义的符号的时候，字符串常量的内容并不被搜索
+//#define M 100
+//#define DOUBLE(X) ((X)+(X))
+//int main()
+//{
+//	DOUBLE(M + 2);
+//	//合法
+//}
+//#和##的用法
+//#的用法
+//#define PRINT(N) printf("the value of "#N" is %d\n",N)
+//int main()
+//{
+//	printf("hello world\n");
+//	printf("hello ""world\n");
+//	//所以字符串是有自动链接的特点的
+//	//printf的冷知识补充
+//	//都会输出hello world
+//	int a = 10;
+//	int b = 20;
+//	PRINT(a);
+//	PRINT(b);
+//	//#N把参数转换成一个字符串
+//	//#N会被替换成"a"
+//	printf("the value of ""a"" is %d\n", a);
+//	printf("the value of ""b"" is %d\n", b);
+//}
+//#define PRINT(N,FORMAT) printf("the value of"#N" is "FORMAT"\n",N)
+//int main()
+//{
+//	int a = 10;
+//	PRINT(a, "%d");
+//	float b = 3.14f;
+//	PRINT(b, "%lf");
+//	return 0;
+//}
+//##号的用法
+//##可以把位于两边的符号合成一个符号
+//#define CAT(Class,Num) Class##Num
+//int main()
+//{
+//	int class106 = 100;
+//	printf("%d\n", CAT(class, 106));//100
+//	//等价于printf("%d\n",class106);
+//}
+//宏参数的副作用 
+//宏的参数是替换进去的 而不是计算完再替换进去的
+//先来回顾一下目前常见的副作用
+//int main()
+//{
+//	int a = 10;
+//	int b;
+//	printf("%d\n", b = ++a);//11  副作用是a在此处也会发生自增
+//	printf("%d\n", a);//11
+//	return 0;
+//}
+//#define MAX(x,y) ((x)>(y)?(x):(y)) //再提醒一遍不要吝啬括号
+//int main()
+//{
+//	int m = MAX(2, 3);
+//	printf("%d\n", m);//3
+//	//这个好理解也没有任何问题
+//	int a = 5, b = 4;
+//	int c = MAX(a++, b++);//使用诸如此类的宏时会发生不可预测的结果
+//	printf("a=%d b=%d c=%d\n", a, b, c);//7 5 6
+//	//7好理解 但是5不好理解 因为:(b)没有被执行 b只在(a)>(b)这一块发生了自增
+//	//6也不好理解 ?(a++) 先使用a是6的值 然后a再自增变成7
+//	return 0;
+//}
+//宏和函数  非要争个好坏吗? 知道什么时候使用宏 什么时候使用函数就好了
+//宏的优势
+//1. 用于调用函数和从函数返回的代码可能比实际执行这个小型计算工作所需要的时间更多。所以宏比
+//函数在程序的规模和速度方面更胜一筹。
+//2. 更为重要的是函数的参数必须声明为特定的类型。所以函数只能在类型合适的表达式上使用。反之
+//这个宏怎可以适用于整形、长整型、浮点型等可以用于 > 来比较的类型。宏是类型无关的。
+//宏的劣势
+//1. 每次使用宏的时候，一份宏定义的代码将插入到程序中。除非宏比较短，否则可能大幅度增加程序的长度。
+//2. 宏是没法调试的。
+//3. 宏由于类型无关，也就不够严谨。
+//4. 宏可能会带来运算符优先级的问题，导致程容易出现错。
+//e.g.
+//#define MAX(x,y) ((x)>(y)?(x):(y))//没有类型的限制
+//int Max(int x, int y)//类型限制为int
+//{
+//	return (x > y ? x : y);
+//}
+//#define MALLOC(NUM,TYPE) (TYPE*)malloc((NUM)*sizeof(TYPE))
+//int main()
+//{
+//	//malloc(40);
+//	//malloc(10,int);//error
+//	int* p1 = MALLOC(10, int);
+//	int* p2 = (int*)malloc(10 * sizeof(int));
+//	return 0;
+//}
+//一些编码习惯 宏名写成全大写 函数名用驼峰命名法
+// #undef
+//这条指令用于移除一个宏定义
+//#define M 100
+//void test(int m)
+//{
+//	printf("%d\n", m);
+//}
+//int main()
+//{
+//	printf("%d\n", M);
+//	test(M);
+//#undef M
+//	//printf("%d", M);
+//	return 0;
+//}
+//条件编译
+//#define __DEBUG__
+//int main()
+//{
+//	int i = 0;
+//	int arr[10] = { 0 };
+//	for (i = 0; i < 10; i++)
+//	{
+//		arr[i] = i;
+//#ifdef __DEBUG__ //为假的话 后面就不参与编译
+//		printf("%d\n",arr[i]);
+//#endif // __DEBUG__    //这里的注释是增加代码的可读性的 目的是为了知道这个条件编译和哪个匹配
+//	}
+//	return 0;
+//}
+//提供一些常用的条件编译指令
+/*
+1.
+#if 常量表达式
+//...
+#endif
+//常量表达式由预处理器求值。
+如：
+#define __DEBUG__ 1
+#if __DEBUG__
+//..
+#endif
+2.多个分支的条件编译
+#if 常量表达式
+//...
+#elif 常量表达式
+//...
+#else
+//...
+#endif
+3.判断是否被定义
+#if defined(symbol)
+#ifdef symbol
+#if !defined(symbol)
+#ifndef symbol
+4.嵌套指令
+#if defined(OS_UNIX)
+#ifdef OPTION1
+unix_version_option1();
+#endif
+#ifdef OPTION2
+unix_version_option2();
+#endif
+#elif defined(OS_MSDOS)
+#ifdef OPTION2
+msdos_version_option2();
+#endif
+#endif
+*/
+//int main()
+//{
+//#if 1 //记得这里要放常量表达式
+//	printf("hehe\n");
+//#endif
+//
+//#if 0
+//	printf("hehe\n");
+//#endif
+//
+//#if 2==3
+//	printf("hehe\n");
+//#endif
+//
+//	return 0;
+//}
+//#define M 3
+//int main()
+//{
+//#if M<5
+//	printf("hehe\n");
+//#elif M==5
+//	printf("haha\n");
+//#elif
+//	printf("heihei\n");
+//#endif
+//	return 0;
+//}
+//#define MAX 100
+//int main()
+//{
+//#if defined(MAX)
+//	printf("hehe\n");
+//#endif
+//	int i = 0;
+//#if defined(i)
+//	printf("hehe\n");
+//#endif
+//	return 0;
+//}
+//int main()
+//{
+//#if !defined(MAX)
+//	printf("max\n");
+//#endif
+//	return 0;
+//}
+//其他的一些预编译指令
+//#error：强制编译报错（终止编译）
+//在预处理阶段检测到非法条件时，立即终止编译，并输出自定义错误信息
+//#pragma：编译器专属指令（平台相关）
+//核心作用是向编译器发送特定指令（非标准，不同编译器支持的 #pragma 不同），用于控制编译行为
+//#line：修改行号 / 文件名（调试辅助）
+//修改预处理器记录的「当前行号」和「文件名」
 
-	return 0;
-}
+// MSVC：设置结构体按 16 字节对齐
+//#pragma pack(push, 16)  // push 保存当前对齐设置，16 设为新值
+//struct Data
+//{
+//	char a;
+//	int b;
+//	double c;
+//};
+//#pragma pack(pop)  // 恢复之前的对齐设置
+//// GCC：等价写法（也可用 __attribute__）
+//#pragma pack(16)
+//struct DataGCC 
+//{
+//	char a;
+//	int b;
+//	double c;
+//};
+//#pragma pack()
+//int main()
+//{
+//	// 原始行号：假设 main 从第4行开始
+//	printf("原始：行号=%d，文件=%s\n", __LINE__, __FILE__);  // 输出 6, test.c
+//	// 修改行号为 100，文件名为 "my_code.c"
+//#line 100 "my_code.c"
+//	printf("修改后：行号=%d，文件=%s\n", __LINE__, __FILE__);  // 输出 101, my_code.c
+//	// 后续行号自动递增
+//	printf("自动递增：行号=%d\n", __LINE__);  // 输出 102
+//	return 0;
+//}
+//offsetof宏的实现
+//size_t offsetof( structName, memberName );//函数原型
+//来个百度笔试题
+//写一个宏 计算结构体中某变量相对于首地址的偏移，并给出说明
+//struct S
+//{
+//	char c1;
+//	int i;
+//	char c2;
+//};
+//#define OFFSETOF(type,m_name) (size_t)&(((type*)0)->m_name) //太牛逼NB了 好好研究这串代码 算是指针的运用
+//#define OFFSETOF(type,m_name) (size_t)&(((type*)0x00000000)->m_name) //也可以这么写
+//int main()
+//{
+//	struct S s = { 0 };
+//	struct S* ps = &s;
+//	printf("%d\n", OFFSETOF(struct S, c1));//0
+//	printf("%d\n", OFFSETOF(struct S, i));//4
+//	printf("%d\n", OFFSETOF(struct S, c2));//8
+//	//printf("%d\n", offsetof(struct S, c1));//0
+//	//printf("%d\n", offsetof(struct S, i));//4
+//	//printf("%d\n", offsetof(struct S, c2));//8
+//	return 0;
+//}
+//OK啊 所有知识点结束 记得及时复习巩固和加强刷题训练 顺便再写一篇博客
+
+//补题 单身狗 力扣260
+//一个数组中只有两个数字是出现一次，其他所有数字都出现了两次
+//编写一个函数找出这两个只出现一次的数字   太牛逼NB了鹏哥这个方法
+//void find_single_dog(const int arr[], const int sz, int* pd1, int* pd2)
+//{
+//	//1,1,2,2,3,3,4,4,5,6  
+//	//1,2,3,4,5,1,2,3,4,6
+//	//0101 ->5
+//	//0110 ->6
+//	//0011 ->3
+//	int i = 0;
+//	int ret = 0;
+//	for (i = 0; i < sz; i++)
+//	{
+//		ret ^= arr[i];//同0异1
+//	}
+//	int pos = 0;
+//	//00000000 00000000 00000000 00000011 -->ret
+//	//00000000 00000000 00000000 00000001 -->1
+//
+//	for (pos = 0; pos < 32; pos++)
+//	{
+//		if (((ret >> pos) & 1) == 1)
+//		{
+//			break;// 如果找到为 1 的位，立即跳出循环    且pos的值会被更新
+//		}
+//	}
+//	for (i = 0; i < sz; i++)
+//	{
+//		if (((arr[i] >> pos) & 1) == 1)//分组来x和y的pos是不同的 所以必定一个在if组 一个在else组
+//		{
+//			*pd1 ^= arr[i];//好好理解 这块不好懂 
+//		}
+//		else
+//		{
+//			*pd2 ^= arr[i];
+//		}
+//	}
+//}
+////懂了 song
+////分组
+////0去异或所有数字得到的就是那两个单生狗的异或
+////异或位置上的不同的就是1 pos那里从左往右找到第一个为1的数并更新pos的值 *pd1是0 按照分组来异或 相同的异或完就变成了0 所以
+////最后*pd1就是第一组里面的那个单身狗
+////同样的else得到的就是另一个单身狗
+//int main()
+//{
+//	int arr[] = { 1,1,2,2,3,3,4,4,5,6 };
+//	int sz = sizeof(arr) / sizeof(arr[0]);
+//	int dog1 = 0;
+//	int dog2 = 0;
+//	find_single_dog(arr, sz, &dog1, &dog2);
+//	printf("%d %d\n", dog1, dog2);
+//	return 0;
+//}
+//atoi
+//int atoi(const char *str)  <stdlib.h>
+//返回转换后的长整数
+//atoi基本用法
+//int main()
+//{
+//	int val;
+//	char str[20];
+//	strcpy(str, "9899ads489");
+//	val = atoi(str);
+//	printf("字符串值 = %s, 整型值 = %d\n", str, val);
+//	//字符串值 = 9899ads489, 整型值 = 9899
+//	strcpy(str, "runoob.com");
+//	val = atoi(str);
+//	printf("字符串值 = %s, 整型值 = %d\n", str, val);
+//	//字符串值 = runoob.com, 整型值 = 0
+//	return(0);
+//}
+//接下来模拟实现atoi
+//enum Status
+//{
+//	VALID,//0
+//	INVALID//1
+//};
+//enum Status sta = INVALID;
+//int  myatoi(const char* str)
+//{
+//	sta = INVALID;
+//	assert(str);
+//	if (*str == '\0')
+//	{
+//		return 0;
+//	}
+//	while (isspace(*str))
+//	{
+//		str++;
+//	}
+//	int flag = 1;
+//	if (*str == '+')
+//	{
+//		flag = 1;
+//		str++;
+//	}
+//	else if (*str == '-')
+//	{
+//		flag = -1;
+//		str++;
+//	}
+//	long long sum = 0;
+//	// 开始转换数字
+//	while (*str && isdigit(*str))
+//	{
+//		int digit = *str - '0';
+//		// 检查正溢出
+//		if (flag == 1 && sum > INT_MAX / 10 - digit / 10)
+//		{
+//			sta = INVALID;
+//			return INT_MAX;
+//		}
+//		// 检查负溢出
+//		if (flag == -1 && (-sum) < INT_MIN / 10 + digit / 10)
+//		{
+//			sta = INVALID;
+//			return INT_MIN;
+//		}
+//		sum = sum * 10 + digit;
+//		str++;
+//	}
+//	// 如果遇到了非数字字符且已经转换了数字，则认为是有效转换
+//	// 如果整个字符串都没有数字，则是无效转换
+//	if (str != (str - (sum == 0 ? 0 : 1))) // 简单判断是否转换了数字
+//	{
+//		sta = VALID;
+//	}
+//	return flag * sum;
+//}
+//int main()
+//{
+//	char str1[] = "xing1019zi";
+//	char str2[] = "1019xingzi1019";
+//	char str3[] = "-1019xingzi1019";
+//	if (sta == VALID)
+//	{
+//		printf("合法转换\n");
+//	}
+//	else if (sta == INVALID)
+//	{
+//		printf("非法返回\n");
+//	}
+//	int val1 = myatoi(str1);
+//	printf("%s %d\n", str1, val1);//0
+//	int val2 = myatoi(str2);
+//	printf("%s %d\n", str2, val2);//1019
+//	int val3 = myatoi(str3);
+//	printf("%s %d\n", str3, val3);//-1019
+//	return 0;
+//}
+//坑
+//#define INT_PTR int*
+//typedef int* int_ptr;
+//INT_PTR a, b;//a是int* b是int
+//int_ptr c, d;//c是int* d是int*
+////int* a, b;和 int *a, b;是完全等价的
+////*只属于 a，不属于 b
+//再强调一遍:feof是用来确认上一次读取操作是否因为到达文件末尾而失败
+//写一个宏 可以将一个整数的二进制位的奇数和偶数位交换
+//#define SWAP_BIT(N) ((((N)&(0x55555555))<<1) + ((N)&(0xaaaaaaaa)>>1))
+//int main()
+//{
+//	int n = 0;
+//	scanf("%d", &n);
+//	SWAP_BIT(n);
+//	return 0;
+//}
+//int main()
+//{
+//	unsigned char i = 7;
+//	int j = 0;
+//	for (; i > 0; i -= 3)
+//	{
+//		++j;
+//	}
+//	printf("%d\n", j);
+//	//7 4 1 
+//	//1 2 3
+//	//10000000 00000000 00000000 00000010 --> -2
+//	//11111111 11111111 11111111 11111101
+//	//11111111 11111111 11111111 11111110 --> -2的补码
+//	//							 11111110 --> 放进i  十进制为254 所以1-2之后变成254
+//	//254 / 3 = 84 ----2     2 - 3 = -1
+//	//10000000 00000000 00000000 00000001 --> -1
+//	//11111111 11111111 11111111 11111110
+//	//11111111 11111111 11111111 11111111 --> -1的补码
+//	//							 11111111 --> 放进i  十进制为255
+//	//255 / 3 = 85 
+//	//3+84+1+85=173
+//	return 0;
+//}
+//int main()
+//{
+//	char a = 0, ch;
+//	while ((ch = getchar()) != '\n')
+//	{
+//		if (a % 2 != 0 && (ch >= 'a' && ch <= 'z'))
+//		{
+//			ch = ch - 'a' + 'A';
+//		}
+//		a++;
+//		putchar(ch);
+//	}
+//	printf("\n");
+//	return 0;
+//}
+//int main()
+//{
+//	int a = -3;
+//	unsigned int b = 2;
+//	long c = a + b;
+//	printf("%ld\n", c);
+//	printf("%u\n", c);
+//	return 0;
+//}
 
 
 
+
+//学数据结构时下面内容记得拷贝过去和修改一下
 //多写写博客
 //1、系统过完数据结构 —— 所有代码要全部跟着自己实现一遍
 //2、C++新特性、Linux、MySQL
 //3、过算法集训 —— 保持力扣刷题
-//4、高数 四级                                           鹏哥150集
-/*									  蓝桥杯报名  ACM三轮选拔12.18 14.30-17.00   linux
+//4、高数 四级                                 鹏哥150集   预处理
+/*									  蓝桥杯报名✔ ACM三轮选拔12.18 14.30-17.00✔   linux
 									  easyX 控制台 swing 数据库 shutdown命令 句柄 vwmare workstation
-									  Git  PTA上50题 洛谷200题 LeetCode 汉诺塔(小游戏)
-									  英语四级 班主任的科研组 《函数栈帧的创建与销毁》
-									  数据结构 算法 《剑指offer》
-大一上  1.C语言 中国大学MOOC 翁恺
+									  Git✔  PTA上50题 洛谷200题 LeetCode 汉诺塔(小游戏)
+									  英语四级 班主任的科研组 	 数据结构 算法
+									  《函数栈帧的创建与销毁》《剑指offer》《高质量C/C++编程指南》
+大一上  1.C语言 中国大学MOOC 翁恺✔
 		2.《C primer plus》
-		3.大概学到指针和结构体
+		3.大概学到指针和结构体✔
 		4.菜鸟教程（https://www.runoob.com/）
-		5.B站（C语言小项目）
+		5.B站（C语言小项目）✔
 
 大一下：1.数据结构与算法基础
 	   2.在学这门课的过程中或者学完之后在力扣(leetcode)和洛谷两个网站去刷算法题，一天一道长期坚持。
