@@ -1,72 +1,17 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-//¶¯Ì¬ÎÄ¼şµÄ°æ±¾
-#include "Contact2.h"
-enum Option
-{
-	EXIT,
-	ADD,
-	DEL,
-	SEARCH,
-	MODIFY,
-	SHOW,
-	SORT
-};
-void menu()
-{
-	printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-	printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-	printf("@@@@@@@                           @@@@@@\n");
-	printf("@@@@@@@    1.Add       2.Del      @@@@@@\n");
-	printf("@@@@@@@    3.Search    4.Modify   @@@@@@\n");
-	printf("@@@@@@@    5.show      6.Sort     @@@@@@\n");
-	printf("@@@@@@@           0.Exit          @@@@@@\n");
-	printf("@@@@@@@                           @@@@@@\n");
-	printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-	printf("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n");
-}
+ï»¿#define _CRT_SECURE_NO_WARNINGS 1
+//ä»¥åå°½é‡å†™çš„è§„èŒƒäº› å¤šæ–‡ä»¶çš„ç¼–ç¨‹
+//è®¾è®¡å¹¶å®ç°ä¸€ä¸ªå¸¦å¤´èŠ‚ç‚¹çš„å•å‘é“¾è¡¨
+//å®ç°å¤´æ’æ³•âœ”
+//ä»»æ„ä½ç½®æ’å…¥æ³•
+//æŒ‰ç…§å€¼æ¥åˆ é™¤æŸä¸ªå…ƒç´ 
+//æ˜¾ç¤ºæ•´ä¸ªé“¾è¡¨çš„æ•°æ®
+#include "SL.h"
+//void test()
+//{
+//
+//}
 int main()
 {
-	int input = 0;
-	Contact con;//Í¨Ñ¶Â¼
-	//³õÊ¼»¯Í¨Ñ¶Â¼
-	InitContact(&con);
-	do
-	{
-		menu();
-		printf("ÇëÑ¡Ôñ:");
-		scanf("%d", &input);
-		switch (input)
-		{
-		case ADD:
-			AddContact(&con);
-			break;
-		case DEL:
-			DelContact(&con);
-			break;
-		case SEARCH:
-			SearchContact(&con);
-			break;
-		case MODIFY:
-			ModifyContact(&con);
-			break;
-		case SHOW:
-			ShowContact(&con);
-			break;
-		case SORT:
-			SortContact(&con);
-			break;
-		case EXIT:
-			SaveContact(&con);
-			DestoryContact(&con);
-			printf("ÍË³öÍ¨Ñ¶Â¼\n");
-			break;
-		default:
-			printf("Ñ¡Ôñ´íÎóÇëÖØĞÂÑ¡Ôñ\n");
-		}
-	} while (input);
+	LinkList_t* table = creatLinkList();
 	return 0;
 }
-
-//ÅÅĞò¿ÉÒÔ°´ÕÕÒâÔ¸À´ ¿ÉÒÔÊÇ Ãû×Ö ÄêÁä µç»°µÈ   Íê³É
-//Çå¿ÕÆÁÄ»¿´×ÅÇåË¬
-//Ò»´ÎĞÔ¶àĞŞ¸Ä¼¸¸öÁªÏµÈËµÄĞÅÏ¢
